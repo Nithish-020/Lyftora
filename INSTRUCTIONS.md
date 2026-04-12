@@ -48,6 +48,13 @@ Lyftora (formerly FitForge) is an AI-powered personal trainer mobile app built w
 
 ### Current Build Status
 - [x] Phase 0: Project scaffold + folder structure
+- [x] Phase 0: Design system (colors, typography, spacing, shadows)
+- [x] Phase 0: TypeScript interfaces (all Section 6 types)
+- [x] Phase 0: Zustand stores (theme, user, workout, nutrition, coach)
+- [x] Phase 0: Core UI components (Button, Card, Input, Typography, ScreenWrapper)
+- [x] Phase 0: Navigation (RootStack + MainTab with custom tab bar)
+- [x] Phase 0: All placeholder screens (Onboarding, Dashboard, Workout, Diet, Progress, Coach)
+- [x] Phase 0: EAS config + font loading + bundle verified
 - [ ] Phase 1: Auth + Onboarding
 - [ ] Dashboard
 - [ ] Workout Plan
