@@ -259,7 +259,7 @@
   margin-top: var(--space-3xl);
 }
 
-.step:first-of-type {
+.section__header + .step {
   margin-top: 0;
 }
 
