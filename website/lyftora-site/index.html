@@ -1,295 +1,459 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO Meta Tags -->
-  <title>Lyftora — AI Personal Trainer & Indian Diet Tracker | Best Fitness App India</title>
-  <meta name="description" content="Lyftora is India's first AI fitness coach. Get personalized workout plans, track 100+ Indian foods with real macros, and train smarter with an AI that adapts to you. Download now.">
-  <meta name="keywords" content="AI fitness app India, AI personal trainer app, Indian diet tracker, workout planner India, AI workout generator, nutrition tracker Indian food, best gym app India, fitness coach app">
+<title>Lyftora — Train smarter. Lift forever.</title>
+<meta name="description" content="The AI personal trainer that doesn't charge rent. One honest plan. A lifetime of training." />
+<meta name="keywords" content="AI fitness app India, AI personal trainer app, Indian diet tracker, workout planner India, AI workout generator, nutrition tracker Indian food, best gym app India, fitness coach app" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Lyftora — Your AI Fitness Coach, Built for India">
-  <meta property="og:description" content="AI-generated workout plans. Indian nutrition tracking. A personal coach that adapts to you. All in one app.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://lyftora.com">
-  <meta property="og:image" content="https://lyftora.com/assets/images/og-image.png">
+<meta property="og:title" content="Lyftora — Train smarter. Lift forever." />
+<meta property="og:description" content="An AI coach that knows your schedule, your goals, and every rep you've ever lifted. One honest subscription. No hidden tiers." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://lyftora.com" />
+<meta property="og:image" content="https://lyftora.com/assets/images/og-image.png" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Lyftora — Your AI Fitness Coach, Built for India">
-  <meta name="twitter:description" content="AI-generated workout plans. Indian nutrition tracking. A personal coach that adapts to you.">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Lyftora — Train smarter. Lift forever." />
+<meta name="twitter:description" content="An AI coach that knows your schedule, your goals, and every rep you've ever lifted." />
 
-  <!-- Canonical -->
-  <link rel="canonical" href="https://lyftora.com">
+<link rel="canonical" href="https://lyftora.com" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Navigation -->
-  <header class="navbar" id="navbar">
-    <nav class="container navbar__inner" aria-label="Main navigation">
-      <a href="#" class="navbar__logo">Lyftora</a>
-      <ul class="navbar__links" id="nav-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#footer">About</a></li>
+
+<a href="#top" class="skip-link">Skip to main content</a>
+
+<!-- Custom cursor -->
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav" aria-label="Primary">
+  <a href="#top" class="brand"><span class="brand-dot" aria-hidden="true"></span>Lyftora</a>
+  <div class="nav-links">
+    <a href="#manifesto">Manifesto</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Start free ↗</a>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-headline">
+    <div class="hero-blobs" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+    </div>
+    <div class="container">
+      <div class="hero-head">
+        <div class="eyebrow-pill">
+          <span class="badge">NEW</span>
+          AI personal trainer &middot; Shipping May 2026
+        </div>
+        <h1 class="hero-headline" id="hero-headline">
+          <span class="word">Train</span>
+          <span class="word"><em>smarter.</em></span><br/>
+          <span class="word">Get</span>
+          <span class="word">stronger.</span><br/>
+          <span class="word">Lift</span>
+          <span class="word">forever.</span>
+        </h1>
+        <p class="hero-sub">
+          An AI coach that knows your schedule, your goals, and every rep you've ever lifted.
+          One honest subscription. No hidden tiers, no premium upsells. Just training that compounds for life.
+        </p>
+        <div class="hero-ctas">
+          <a href="#pricing" class="btn btn-primary" data-magnet>
+            Start 7-day free trial
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="#manifesto" class="btn btn-ghost" data-magnet>Read the manifesto</a>
+        </div>
+      </div>
+
+      <div class="hero-collage">
+        <div class="card-stat reveal">
+          <span class="sticker">Live</span>
+          <div>
+            <div class="big" data-counter="12847">0</div>
+            <div class="label">Workouts logged this week</div>
+          </div>
+          <div class="label label-dim">Across 38 countries.</div>
+        </div>
+
+        <div class="card-phone reveal">
+          <div class="phone-3d" id="phone3d">
+            <div class="phone-screen-2">
+              <div class="ph-top"><span>9:41</span><span aria-hidden="true">&#9680; &#9679; &#9679;&#9679;&#9679;</span></div>
+              <div>
+                <div class="ph-kicker">Today &middot; Week 6</div>
+                <div class="ph-title">Push Day</div>
+                <span class="ph-chip">+ PR 92.5kg</span>
+              </div>
+              <div class="ph-rep">
+                <div class="ph-rep-row"><span>Bench Press</span><strong>92.5 &times; 6</strong></div>
+                <div class="ph-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+              </div>
+              <div class="ph-ring-wrap">
+                <div class="ph-ring" aria-hidden="true"><span>1:23</span></div>
+                <div>
+                  <small>Rest</small>
+                  <div><strong>Next set soon</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-quote reveal">
+          <div class="q-mark" aria-hidden="true">&ldquo;</div>
+          <p>Finally, an app that treats me like an athlete &mdash; not a subscription.</p>
+          <div class="who">
+            <i aria-hidden="true">&mdash;</i> Priya M., marathon runner
+          </div>
+        </div>
+
+        <div class="card-coin reveal card-coin-wide">
+          <span class="coin-badge">TAP THE COIN</span>
+          <h3 class="coin-title">Every tap is a month of <em>their</em> subscription.</h3>
+          <div class="coin-counter"><span class="rupee">&#8377;</span><span id="coin-count">0</span></div>
+          <p class="coin-small">Rivals charge ₹499 a month for the same features. Lyftora is ₹199 &mdash; all in.</p>
+          <button class="coin-btn" id="coin-btn" data-magnet type="button">+1 month <span class="coin-btn-hint">SPAM IT</span></button>
+        </div>
+
+        <div class="card-stat card-stat-violet reveal">
+          <span class="sticker sticker-lime">4.9 &#9733;</span>
+          <div class="big big-sm">&ldquo;Best fitness app I've ever subscribed to.&rdquo;</div>
+          <div class="label">&mdash; Play Store early access review</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Train smarter</span><span class="star">&#10022;</span>
+      <span>Lift forever</span><span class="star">&#10022;</span>
+      <span>No upsells</span><span class="star">&#10022;</span>
+      <span>One plan</span><span class="star">&#10022;</span>
+      <span>Built for athletes</span><span class="star">&#10022;</span>
+      <span>Coached by AI</span><span class="star">&#10022;</span>
+      <span>Train smarter</span><span class="star">&#10022;</span>
+      <span>Lift forever</span><span class="star">&#10022;</span>
+      <span>No upsells</span><span class="star">&#10022;</span>
+      <span>One plan</span><span class="star">&#10022;</span>
+      <span>Built for athletes</span><span class="star">&#10022;</span>
+      <span>Coached by AI</span><span class="star">&#10022;</span>
+    </div>
+  </div>
+
+  <!-- MANIFESTO / COMPARE -->
+  <section class="sec sec-manifesto" id="manifesto" aria-labelledby="manifesto-title">
+    <div class="compare">
+      <div class="container">
+        <div class="sec-head compare-head reveal">
+          <span class="kicker">Honest pricing</span>
+          <h2 class="sec-title" id="manifesto-title">Fitness apps shouldn't <em>nickel-and-dime</em> you.</h2>
+          <p class="sec-sub sec-sub-dim">
+            Compare what others charge for &ldquo;premium&rdquo; tiers &mdash; with ads, locked programs, and upsell pop-ups &mdash;
+            against one honest Lyftora plan. Tap a time frame below to see how the gap widens.
+          </p>
+        </div>
+
+        <div class="years reveal">
+          <span>See cost over</span>
+          <div class="years-pills" role="tablist" aria-label="Time period">
+            <button class="years-pill" data-years="1" type="button">1 yr</button>
+            <button class="years-pill" data-years="3" type="button">3 yrs</button>
+            <button class="years-pill active" data-years="5" type="button">5 yrs</button>
+            <button class="years-pill" data-years="10" type="button">10 yrs</button>
+          </div>
+        </div>
+
+        <div class="compare-chart reveal" id="cmp-chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES BENTO -->
+  <section class="sec" id="features" aria-labelledby="features-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="kicker">What makes it tick</span>
+        <h2 class="sec-title" id="features-title">Built to coach, not to <em>upsell</em>.</h2>
+      </div>
+
+      <div class="bento">
+        <div class="b-card b-1 reveal">
+          <span class="tag">AI Coach</span>
+          <h3>A coach who actually remembers your last injury.</h3>
+          <p>Powered by Claude. Tuned on a decade of training science. Adjusts on the fly &mdash; less if you slept badly, more if you PR'd yesterday.</p>
+          <div class="stamp-wrap" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <path id="circle-txt" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" fill="none"/>
+              </defs>
+              <text font-family="Space Grotesk" font-size="9" font-weight="600" letter-spacing="2" fill="#0E0E12">
+                <textPath href="#circle-txt">AI COACH &middot; ON YOUR SIDE &middot; AI COACH &middot; ON YOUR SIDE &middot; </textPath>
+              </text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="b-card b-2 reveal rep-card">
+          <span class="hint">Click to add a rep</span>
+          <div class="rep-num" id="rep-num" aria-live="polite">0</div>
+          <button id="rep-btn" data-magnet type="button">Add rep</button>
+        </div>
+
+        <div class="b-card b-3 reveal">
+          <span class="tag">Always on</span>
+          <h3>Works offline. Wherever your grind goes.</h3>
+          <p>Gyms lose Wi-Fi. Flights don't care. Lyftora logs, plans, and tracks without a single bar of signal &mdash; and syncs the moment you're back.</p>
+        </div>
+
+        <div class="b-card b-4 reveal">
+          <span class="tag">Nutrition</span>
+          <h3>Global food library with real regional macros.</h3>
+          <p>From oats to overnight dosa. Every meal, counted honestly.</p>
+        </div>
+
+        <div class="b-card b-5 reveal">
+          <span class="tag">Performance</span>
+          <h3>15 MB. 2 s cold start. Zero bloat.</h3>
+          <p>Built to fly on the phone you already own &mdash; no flagship required.</p>
+        </div>
+
+        <div class="b-card b-6 reveal">
+          <span class="tag">Forever</span>
+          <h3>Every update, included.</h3>
+          <p>One plan. Every feature we ever ship &mdash; on every device, as long as you're in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COACH CHAT -->
+  <section class="sec" aria-labelledby="coach-title">
+    <div class="container">
+      <div class="coach-wrap">
+        <div class="reveal">
+          <span class="kicker">The coach</span>
+          <h2 class="sec-title sec-title-tight" id="coach-title">Ask anything. Get a plan, not a <em>paywall</em>.</h2>
+          <ul class="coach-copy">
+            <li>Knows your schedule <span>CONTEXT</span></li>
+            <li>Learns your patterns <span>MEMORY</span></li>
+            <li>Adapts for injuries <span>ADJUST</span></li>
+            <li>Plans meals around your week <span>NUTRITION</span></li>
+            <li>Available 24 / 7 <span>ALWAYS</span></li>
+            <li>Never forgets a PR <span>RECALL</span></li>
+          </ul>
+        </div>
+
+        <div class="chat-box reveal">
+          <div class="chat-head-2">
+            <div class="ava" aria-hidden="true">L</div>
+            <div>
+              <strong>Coach</strong>
+              <small>Online &middot; reading your history</small>
+            </div>
+            <span class="live">LIVE</span>
+          </div>
+          <div class="bb user">I've got 45 minutes, dumbbells only. Want to cut 6 kg by June.</div>
+          <div class="bb coach">Got it. 4-day split, conditioning finishers, calories trimmed 18%. I'll queue a grocery list too &mdash; want Mediterranean or high-protein Asian?</div>
+          <div class="bb user">High protein Asian, please.</div>
+          <div class="bb typing" aria-label="Coach is typing"><span></span><span></span><span></span></div>
+          <div class="send-row">
+            <label class="sr-only" for="coach-input">Message the coach</label>
+            <input type="text" placeholder="Ask your coach anything&hellip;" id="coach-input" />
+            <button id="coach-send" data-magnet type="button">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOD DECK -->
+  <section class="sec sec-food" aria-labelledby="food-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="kicker">Nutrition that knows you</span>
+        <h2 class="sec-title" id="food-title">Drag a card. <em>Meet your plate.</em></h2>
+        <p class="sec-sub">A food library that counts what most apps skip &mdash; the oil in your dosa, the butter in your paratha, the marinade on your chicken. Drag the deck.</p>
+      </div>
+
+      <div class="food-deck" id="food-deck" aria-label="Food cards — drag to reveal the next">
+        <div class="food-hint">Drag <kbd>&larr; &rarr;</kbd> or <kbd>tap</kbd></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="sec sec-stats" aria-labelledby="stats-title">
+    <div class="stats">
+      <div class="container">
+        <h2 class="sr-only" id="stats-title">Under the hood</h2>
+        <div class="stats-grid">
+          <div class="stat reveal">
+            <div class="num" data-counter="15" data-suffix=" MB">0</div>
+            <div class="ll">App size</div>
+            <p class="dd">Smaller than the cache on your photo app.</p>
+          </div>
+          <div class="stat reveal">
+            <div class="num" data-counter="2" data-suffix=" s">0</div>
+            <div class="ll">Cold start</div>
+            <p class="dd">Open, log, close. Before you finish your water.</p>
+          </div>
+          <div class="stat reveal">
+            <div class="num" data-counter="100" data-suffix="%">0</div>
+            <div class="ll">Offline capable</div>
+            <p class="dd">Every feature works without a single bar of signal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="sec pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="container">
+      <div class="reveal">
+        <span class="kicker kicker-center">Pricing &middot; radically simple</span>
+        <h2 class="sec-title sec-title-center" id="pricing-title">One plan. <em>No surprises.</em></h2>
+      </div>
+
+      <div class="price-display-2 reveal">
+        <span class="rupee">&#8377;</span>
+        <span class="num" id="price-num">199</span>
+        <span class="once">per month</span>
+      </div>
+      <p class="price-sub reveal">
+        Or <strong>&#8377;1,499 / year</strong> &mdash; save 37%.
+      </p>
+      <p class="price-para-2 reveal">
+        No tiers. No locked features. No &ldquo;premium&rdquo; upsell mid-set.
+        Just one honest plan &mdash; cancel anytime, keep your data forever.
+      </p>
+
+      <div class="reveal">
+        <a href="#" class="btn btn-primary" id="buy-btn" data-magnet>
+          Start 7-day free trial
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <ul class="price-meta reveal">
+        <li>&#10003; Cancel anytime</li>
+        <li>&#10003; Updates always free</li>
+        <li>&#10003; 7-day free trial</li>
+        <li>&#10003; Android &middot; iOS &middot; Web</li>
       </ul>
-      <a href="https://play.google.com/store" class="btn btn--primary navbar__cta" target="_blank" rel="noopener">Download Now</a>
-      <button class="navbar__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero__inner">
-      <p class="eyebrow">India's #1 AI Fitness App</p>
-      <h1 class="hero__title">Train Smarter. Eat Better.<br><span class="text-primary-color">India's First AI Fitness Coach.</span></h1>
-      <p class="hero__subtitle text-secondary">Smart workout plans. Accurate Indian nutrition tracking. An AI coach that gets better as you do. Welcome to fitness that actually fits your life.</p>
-      <div class="hero__ctas">
-        <a href="https://play.google.com/store" class="btn btn--primary" target="_blank" rel="noopener">Download Now</a>
-        <a href="#how-it-works" class="btn btn--ghost">See How It Works ↓</a>
-      </div>
-      <p class="hero__platform text-tertiary">Available on Android · iOS coming soon</p>
-      <div class="hero__screenshot screenshot-placeholder">
-        App Dashboard — AI coach greeting, today's workout plan, macro rings with Indian food entries
-      </div>
     </div>
   </section>
 
-  <!-- AI Coach Feature -->
-  <section class="section ai-coach">
-    <div class="container two-col reveal">
-      <div class="two-col__content">
-        <p class="eyebrow eyebrow--accent">AI-Powered Coaching</p>
-        <h2>Like Having a Trainer<br><span class="text-accent">Who Never Cancels on You.</span></h2>
-        <p class="text-secondary" style="margin-top: var(--space-base); line-height: 1.7;">Lyftora's AI coach learns how you train, what you eat, and where you're stuck — then builds a plan that actually works for your body and your schedule. Ask it anything. It adapts as you grow.</p>
-        <ul class="check-list" aria-label="AI coach features">
-          <li class="check-list__item">Personalized workout plans generated in seconds</li>
-          <li class="check-list__item">Nutrition advice that understands Indian meals</li>
-          <li class="check-list__item">Adapts to your progress — gets smarter over time</li>
-        </ul>
-      </div>
-      <div class="two-col__visual">
-        <div class="screenshot-placeholder">AI Coach Chat — user asks about poha for breakfast, AI responds with personalized lunch plan</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Indian Nutrition Feature -->
-  <section class="section nutrition" style="background: var(--color-bg-alt);">
-    <div class="container two-col two-col--reverse reveal">
-      <div class="two-col__content">
-        <p class="eyebrow">Built for Indian Food</p>
-        <h2>100+ Indian Dishes.<br>Real Macros. <span class="text-primary-color">Zero Guesswork.</span></h2>
-        <p class="text-secondary" style="margin-top: var(--space-base); line-height: 1.7;">We built a nutrition database for how India eats — regional dishes, real serving sizes, accurate macros. Log your meals in seconds, see exactly where your protein, carbs, and fats stand, and let the AI adjust your plan accordingly.</p>
-        <div class="food-chips" aria-label="Example Indian dishes tracked">
-          <span class="food-chip">Biryani</span>
-          <span class="food-chip">Dal Tadka</span>
-          <span class="food-chip">Roti</span>
-          <span class="food-chip">Dosa</span>
-          <span class="food-chip">Paneer Butter Masala</span>
-          <span class="food-chip">Poha</span>
-          <span class="food-chip">Tandoori Chicken</span>
-          <span class="food-chip food-chip--more">+ 100 more</span>
-        </div>
-      </div>
-      <div class="two-col__visual">
-        <div class="screenshot-placeholder">Nutrition Tracker — Poha 158 cal, Dal Tadka 210 cal, Chicken Biryani 490 cal with macro breakdown rings</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature Breakdown -->
-  <section class="section features" id="features">
+  <!-- FAQ -->
+  <section class="sec sec-faq" id="faq" aria-labelledby="faq-title">
     <div class="container">
-      <div class="section__header">
-        <h2>Built to Do It All.<br><span class="text-primary-color">So You Don't Need Anything Else.</span></h2>
+      <div class="sec-head reveal">
+        <span class="kicker">Answers</span>
+        <h2 class="sec-title" id="faq-title">You asked. <em>We answered.</em></h2>
       </div>
-      <div class="grid-2 features__grid">
-        <div class="card feature-card reveal">
-          <span class="feature-card__icon" aria-hidden="true">🧠</span>
-          <h3>AI That Gets You</h3>
-          <p class="text-secondary">Tell it your goals, your limits, your schedule. It builds the perfect plan — and updates it as you grow.</p>
-        </div>
-        <div class="card feature-card reveal">
-          <span class="feature-card__icon" aria-hidden="true">💪</span>
-          <h3>Never Skip. Never Guess.</h3>
-          <p class="text-secondary">Structured workout plans with exercise guides, set tracking, and a rest timer that keeps you honest.</p>
-        </div>
-        <div class="card feature-card reveal">
-          <span class="feature-card__icon" aria-hidden="true">🍛</span>
-          <h3>Indian Food. Actual Macros.</h3>
-          <p class="text-secondary">From poha to paneer — 100+ dishes with region-accurate nutrition. Log meals in seconds, not minutes.</p>
-        </div>
-        <div class="card feature-card reveal">
-          <span class="feature-card__icon" aria-hidden="true">📈</span>
-          <h3>Proof You're Getting Stronger</h3>
-          <p class="text-secondary">PR tracking, body measurements, visual charts. Your progress, clear as day.</p>
-        </div>
+      <div class="faq reveal">
+        <details>
+          <summary>&#8377;199/month for everything &mdash; really? <span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+          <div class="ans">Yes. One plan unlocks the entire app &mdash; across every device you use. No locked tiers. No &ldquo;premium&rdquo; workouts. No upsell pop-ups mid-set.</div>
+        </details>
+        <details>
+          <summary>What's the catch? <span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+          <div class="ans">There isn't one. Optional expansion packs &mdash; sport-specific programs, regional cuisine libraries &mdash; exist as tiny one-time add-ons if you want them. The core subscription is everything you need.</div>
+        </details>
+        <details>
+          <summary>Is the AI coach good enough to replace a human trainer? <span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+          <div class="ans">For most people training for strength, conditioning, or weight management &mdash; yes. For elite athletes, Lyftora works alongside your human coach as a 24/7 memory and logger. It's a tool, tuned carefully.</div>
+        </details>
+        <details>
+          <summary>Does it work on older phones? <span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+          <div class="ans">Yes. 15 MB download, runs smoothly on 2 GB RAM, under 2 s cold start. We benchmarked on budget devices first &mdash; flagships came second.</div>
+        </details>
+        <details>
+          <summary>When does iOS launch? <span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+          <div class="ans">End of June 2026, at the same price. Your subscription follows you &mdash; sign in on Android, iOS, and web. One account, every device.</div>
+        </details>
+        <details>
+          <summary>What if I don't love it? <span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+          <div class="ans">7-day free trial, cancel in two taps. No emails, no forms, no guilt. We'd rather earn a fan for a decade than trap a user for a month.</div>
+        </details>
       </div>
     </div>
   </section>
 
-  <!-- Pocket Features -->
-  <section class="section pocket-features" style="background: var(--color-bg-alt);">
+  <!-- FINAL CTA -->
+  <section class="final" aria-labelledby="final-title">
     <div class="container">
-      <div class="section__header">
-        <h2>Small Features.<br><span class="text-primary-color">Big Difference.</span></h2>
-      </div>
-      <div class="grid-3 pocket-features__grid">
-        <div class="card pocket-card reveal">
-          <span class="pocket-card__icon" aria-hidden="true">📡</span>
-          <h3>Works Offline</h3>
-          <p class="text-secondary">No WiFi at the gym? No problem. Track workouts and meals without internet.</p>
-        </div>
-        <div class="card pocket-card reveal">
-          <span class="pocket-card__icon" aria-hidden="true">⏱️</span>
-          <h3>Smart Rest Timer</h3>
-          <p class="text-secondary">Auto-starts between sets. Keeps you focused, not scrolling Instagram.</p>
-        </div>
-        <div class="card pocket-card reveal">
-          <span class="pocket-card__icon" aria-hidden="true">📚</span>
-          <h3>Exercise Library</h3>
-          <p class="text-secondary">Searchable database with form guides. Never wonder "am I doing this right?" again.</p>
-        </div>
-      </div>
+      <h2 id="final-title">Lift <em>forever.</em></h2>
+      <p>The AI coach that trains with you, not against you. Ship date: 29 May 2026.</p>
+      <a href="#" class="btn btn-primary" data-magnet>
+        Start free trial
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
     </div>
   </section>
 
-  <!-- Social Proof / Stats -->
-  <section class="section stats">
-    <div class="container">
-      <div class="section__header">
-        <h2>Don't Take Our Word for It.<br><span class="text-primary-color">Take Theirs.</span></h2>
-      </div>
-      <div class="grid-4 stats__grid">
-        <div class="card stat-card reveal">
-          <span class="stat-card__number">100+</span>
-          <p class="stat-card__label text-secondary">Indian dishes tracked</p>
-        </div>
-        <div class="card stat-card reveal">
-          <span class="stat-card__number">500+</span>
-          <p class="stat-card__label text-secondary">Exercises in library</p>
-        </div>
-        <div class="card stat-card reveal">
-          <span class="stat-card__number">24/7</span>
-          <p class="stat-card__label text-secondary">AI coach available</p>
-        </div>
-        <div class="card stat-card reveal">
-          <span class="stat-card__number">100%</span>
-          <p class="stat-card__label text-secondary">Offline capable</p>
-        </div>
-      </div>
-    </div>
-  </section>
+</main>
 
-  <!-- How It Works -->
-  <section class="section how-it-works" id="how-it-works" style="background: var(--color-bg-alt);">
-    <div class="container">
-      <div class="section__header">
-        <h2>Getting Started Is<br><span class="text-primary-color">Stupidly Simple.</span></h2>
+<footer>
+  <div class="container">
+    <div class="foot-brand-big">Lyftora<span class="foot-dot">.</span></div>
+    <div class="footer-grid">
+      <div>
+        <p class="foot-desc">
+          The AI personal trainer that trains with you, not against you. Built for people who train for life, not for a promo code.
+        </p>
       </div>
-
-      <!-- Step 1 -->
-      <div class="two-col step reveal">
-        <div class="two-col__visual">
-          <div class="screenshot-placeholder">Onboarding screen — goals, fitness level, dietary preferences</div>
-        </div>
-        <div class="two-col__content">
-          <span class="step__label">Step 1</span>
-          <h3>Tell Us Who You Are</h3>
-          <p class="text-secondary">Quick profile setup — your fitness goals, current level, dietary preferences, injuries, and equipment access. The more you share, the smarter your AI coach gets.</p>
-        </div>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="two-col two-col--reverse step reveal">
-        <div class="two-col__visual">
-          <div class="screenshot-placeholder">AI coach generating a personalized workout + nutrition plan</div>
-        </div>
-        <div class="two-col__content">
-          <span class="step__label">Step 2</span>
-          <h3>Your AI Coach Takes Over</h3>
-          <p class="text-secondary">In seconds, Lyftora generates a complete workout plan and Indian-friendly meal suggestions. Ask your coach to tweak anything — it's a conversation, not a template.</p>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="two-col step reveal">
-        <div class="two-col__visual">
-          <div class="screenshot-placeholder">Dashboard with progress charts and PR celebration</div>
-        </div>
-        <div class="two-col__content">
-          <span class="step__label">Step 3</span>
-          <h3>Show Up. The App Does the Rest.</h3>
-          <p class="text-secondary">Follow your plan, log meals with a tap, track PRs automatically. Your AI coach reviews your week and adjusts — so every week is better than the last.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="final-cta">
-    <div class="container final-cta__inner">
-      <h2>The Gym Is Waiting.<br>So Is Your AI Coach.</h2>
-      <p>Smart workouts. Indian nutrition. AI coaching. All in one app that actually gets you.</p>
-      <a href="https://play.google.com/store" class="btn btn--inverted" target="_blank" rel="noopener">Download Now</a>
-      <p class="final-cta__platform">Free on Android · iOS coming soon</p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer" id="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <a href="#" class="footer__logo">Lyftora</a>
-        <p class="text-secondary">India's smartest AI fitness app. Train smarter, eat better, get stronger.</p>
-      </div>
-      <div class="footer__col">
-        <h4 class="footer__heading">Product</h4>
+      <div class="foot-col">
+        <h4>Product</h4>
         <ul>
           <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="https://play.google.com/store" target="_blank" rel="noopener">Download</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
-      <div class="footer__col">
-        <h4 class="footer__heading">Company</h4>
+      <div class="foot-col">
+        <h4>Company</h4>
         <ul>
-          <li><a href="#footer">About</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
         </ul>
       </div>
-      <div class="footer__col">
-        <h4 class="footer__heading">Connect</h4>
+      <div class="foot-col">
+        <h4>Follow</h4>
         <ul>
-          <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="#" target="_blank" rel="noopener">Twitter / X</a></li>
-          <li><a href="#" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="#" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="#" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="#" rel="noopener noreferrer">X / Twitter</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer__bottom">
-      <div class="container">
-        <p class="text-tertiary">&copy; 2026 Lyftora. All rights reserved.</p>
-      </div>
+    <div class="foot-bottom">
+      <div>&copy; 2026 Lyftora &middot; Made with care.</div>
+      <div>v1.0 &middot; Shipping May 29</div>
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <script src="js/main.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
