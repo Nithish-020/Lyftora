@@ -369,7 +369,6 @@ ul {
   flex-direction: column;
   gap: 18px;
   transition: transform .45s cubic-bezier(.2, 1.6, .4, 1), box-shadow .4s, border-color .3s;
-  overflow: hidden;
   backdrop-filter: blur(8px);
 }
 
@@ -377,6 +376,7 @@ ul {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   opacity: 0;
   transition: opacity .5s;
   pointer-events: none;
@@ -1083,5 +1083,96 @@ footer {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ---------- Responsive: plan cards ---------- */
+/* Below grid breakpoint cards stack, so the pro-card lift overlaps
+   the "Most loved" tag with the card above. Flatten it and give the
+   tag room. */
+@media (max-width: 959.98px) {
+  .plan.pro,
+  .plan.pro:hover {
+    transform: none;
+  }
+
+  .plan.pro {
+    margin-top: 14px;
+  }
+}
+
+/* Touch devices: tap triggers :hover and leaves cards shifted. */
+@media (hover: none) {
+  .plan:hover,
+  .plan.pro:hover {
+    transform: none;
+    box-shadow: inherit;
+    border-color: var(--line);
+  }
+
+  .plan:hover::before {
+    opacity: 0;
+  }
+
+  .plan.pro:hover::before {
+    opacity: .22;
+  }
+}
+
+/* ---------- Responsive: comparison table ---------- */
+/* Keep feature names visible while scrolling horizontally, and make
+   sure columns don't compress below readability. */
+.cmp-table {
+  min-width: 680px;
+}
+
+.cmp-table thead th:first-child,
+.cmp-table tbody th {
+  position: sticky;
+  left: 0;
+  background: var(--ink);
+  z-index: 2;
+}
+
+.cmp-table thead th:first-child {
+  z-index: 3;
+}
+
+@media (max-width: 720px) {
+  .compare-wrap {
+    padding: 60px 0 32px;
+    margin: 0 8px;
+  }
+
+  .cmp-table {
+    font-size: 13px;
+  }
+
+  .cmp-table thead th {
+    padding: 14px 12px;
+  }
+
+  .cmp-table tbody th,
+  .cmp-table td {
+    padding: 12px 10px;
+    font-size: 12.5px;
+  }
+
+  .cmp-table .col-name {
+    font-size: 18px;
+  }
+
+  .cmp-table .col-kicker {
+    font-size: 10px;
+  }
+
+  .cmp-table .cat {
+    padding-top: 18px !important;
+    font-size: 10.5px;
+  }
+
+  .compare .sub {
+    font-size: 15px;
+    margin-bottom: 28px;
   }
 }

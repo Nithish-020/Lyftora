@@ -110,7 +110,7 @@
 
 // ---------- Magnetic nudge on CTAs ----------
 (() => {
-  document.querySelectorAll('.p-cta,.btn-primary,.nav-cta').forEach(btn => {
+  document.querySelectorAll('.btn-primary,.nav-cta').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();
       const x = (e.clientX - r.left - r.width / 2) * .25;
