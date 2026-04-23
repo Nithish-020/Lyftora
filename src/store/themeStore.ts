@@ -19,10 +19,10 @@ function resolveScheme(pref: ThemePreference): ColorScheme {
 }
 
 export const useThemeStore = create<ThemeState>((set) => {
-  const initial = resolveScheme('dark');
+  const initial = resolveScheme('light');
 
   return {
-    preference: 'dark',
+    preference: 'light',
     activeScheme: initial,
     colors: colors[initial],
     setPreference: (pref) => {

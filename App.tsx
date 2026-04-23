@@ -45,11 +45,14 @@ export default function App() {
     async function prepare() {
       try {
         await Font.loadAsync({
-          'DMSerifDisplay-Regular': require('./src/assets/fonts/DMSerifDisplay-Regular.ttf'),
-          'Outfit-Regular': require('./src/assets/fonts/Outfit-Regular.ttf'),
-          'Outfit-Medium': require('./src/assets/fonts/Outfit-Medium.ttf'),
-          'Outfit-SemiBold': require('./src/assets/fonts/Outfit-SemiBold.ttf'),
-          'JetBrainsMono-Regular': require('./src/assets/fonts/JetBrainsMono-Regular.ttf'),
+          'InstrumentSerif-Regular': require('./src/assets/fonts/InstrumentSerif-Regular.ttf'),
+          'InstrumentSerif-Italic': require('./src/assets/fonts/InstrumentSerif-Italic.ttf'),
+          'SpaceGrotesk-Regular': require('./src/assets/fonts/SpaceGrotesk-Regular.ttf'),
+          'SpaceGrotesk-Medium': require('./src/assets/fonts/SpaceGrotesk-Medium.ttf'),
+          'SpaceGrotesk-SemiBold': require('./src/assets/fonts/SpaceGrotesk-SemiBold.ttf'),
+          'SpaceGrotesk-Bold': require('./src/assets/fonts/SpaceGrotesk-Bold.ttf'),
+          'GeistMono-Regular': require('./src/assets/fonts/GeistMono-Regular.ttf'),
+          'GeistMono-Medium': require('./src/assets/fonts/GeistMono-Medium.ttf'),
         });
       } catch {
         // Fonts failed to load — continue with system fonts

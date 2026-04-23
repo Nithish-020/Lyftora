@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
+    "tokens:build": "node design-tokens/build.mjs",
+    "prestart": "node design-tokens/build.mjs",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",

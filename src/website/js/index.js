@@ -164,18 +164,18 @@ document.querySelectorAll('[data-counter]').forEach(el => cio.observe(el));
 // ---------- Plate builder ----------
 (() => {
   const ingredients = [
-    { id: 'rice',    emoji: '\uD83C\uDF5A', nm: 'Basmati rice',      kc: 210, p: 4,  c: 45, f: 1,  color: '#F5ECD9' },
+    { id: 'rice',    emoji: '\uD83C\uDF5A', nm: 'White rice',      kc: 210, p: 4,  c: 45, f: 1,  color: '#F5ECD9' },
     { id: 'dal',     emoji: '\uD83E\uDD63', nm: 'Dal tadka',         kc: 180, p: 9,  c: 22, f: 6,  color: '#F2B84A' },
     { id: 'roti',    emoji: '\uD83E\uDED3', nm: 'Whole wheat roti',  kc: 120, p: 4,  c: 22, f: 2,  color: '#D8B27A' },
     { id: 'paneer',  emoji: '\uD83E\uDDC0', nm: 'Paneer curry',     kc: 260, p: 14, c: 8,  f: 20, color: '#FFD27A' },
     { id: 'chicken', emoji: '\uD83C\uDF57', nm: 'Grilled chicken',   kc: 220, p: 32, c: 1,  f: 9,  color: '#C98B5E' },
     { id: 'dosa',    emoji: '\uD83E\uDD5E', nm: 'Masala dosa',       kc: 320, p: 8,  c: 48, f: 10, color: '#E9C98C' },
-    { id: 'egg',     emoji: '\uD83C\uDF73', nm: 'Eggs (2)',          kc: 160, p: 12, c: 2,  f: 11, color: '#F2D06B' },
-    { id: 'salad',   emoji: '\uD83E\uDD57', nm: 'Kachumber',         kc: 40,  p: 2,  c: 8,  f: 1,  color: '#9CCB5A' },
-    { id: 'yogurt',  emoji: '\uD83E\uDD5B', nm: 'Dahi',              kc: 90,  p: 6,  c: 8,  f: 4,  color: '#EDE7D1' },
+    { id: 'egg',     emoji: '\uD83C\uDF73', nm: 'Omelette (2)',          kc: 160, p: 12, c: 2,  f: 11, color: '#F2D06B' },
+    { id: 'salad',   emoji: '\uD83E\uDD57', nm: 'Salad',         kc: 40,  p: 2,  c: 8,  f: 1,  color: '#9CCB5A' },
+    { id: 'yogurt',  emoji: '\uD83E\uDD5B', nm: 'Yogurt',              kc: 90,  p: 6,  c: 8,  f: 4,  color: '#EDE7D1' },
     { id: 'fruit',   emoji: '\uD83C\uDF4A', nm: 'Seasonal fruit',    kc: 80,  p: 1,  c: 20, f: 0,  color: '#FF9E5C' },
     { id: 'nuts',    emoji: '\uD83E\uDD5C', nm: 'Almonds (10)',      kc: 70,  p: 3,  c: 2,  f: 6,  color: '#B88A5E' },
-    { id: 'poha',    emoji: '\uD83C\uDF5B', nm: 'Poha',              kc: 230, p: 5,  c: 40, f: 6,  color: '#F4C95A' },
+    { id: 'poha',    emoji: '\uD83C\uDF5B', nm: 'Poha',              kc: 230, p: 5,  c: 40, f: 6,  color: '#F4C95A' }
   ];
 
   const grid = document.getElementById('ing-grid');
