@@ -7,6 +7,12 @@ export type RootStackParamList = {
   OnboardingCoach: undefined;
   OnboardingTracking: undefined;
   OnboardingProfile: undefined;
+  AuthLanding: undefined;
+  SignUp: undefined;
+  LogIn: undefined;
+  OtpVerify: { email: string; mode?: 'signup' | 'recovery' | 'email_change' };
+  ForgotPassword: undefined;
+  ResetPassword: undefined;
   Main: NavigatorScreenParams<MainTabParamList>;
   ActiveWorkout: { workoutId?: string };
   ExercisePicker: undefined;
