@@ -3,11 +3,21 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 
 export type RootStackParamList = {
-  Onboarding: undefined;
+  OnboardingWelcome: undefined;
+  OnboardingCoach: undefined;
+  OnboardingTracking: undefined;
+  OnboardingProfile: undefined;
   Main: NavigatorScreenParams<MainTabParamList>;
   ActiveWorkout: { workoutId?: string };
   ExercisePicker: undefined;
+  RestTimer: { exerciseName?: string; seconds?: number } | undefined;
+  PostWorkout: { workoutId?: string } | undefined;
   CoachChat: { sessionId?: string };
+  FoodSearch: undefined;
+  FoodDetail: { foodId?: string } | undefined;
+  Profile: undefined;
+  Community: undefined;
+  Achievements: undefined;
 };
 
 export type MainTabParamList = {

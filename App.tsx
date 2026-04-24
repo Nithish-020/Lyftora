@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+  type LinkingOptions,
+} from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
@@ -8,6 +13,7 @@ import * as Font from 'expo-font';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { useThemeStore } from './src/store/themeStore';
 import { colors as themeColors } from './src/theme/colors';
+import type { RootStackParamList } from './src/types/navigation';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,6 +40,39 @@ const LyftoraLightTheme = {
     text: themeColors.light.textPrimary,
     border: themeColors.light.border,
     notification: themeColors.light.accent,
+  },
+};
+
+// Deep-linking surface — every screen that should be addressable from a URL
+// (lyftora://onboarding/coach, lyftora://workout/active, etc.) lives here.
+const linking: LinkingOptions<RootStackParamList> = {
+  prefixes: ['lyftora://', 'https://lyftora.app'],
+  config: {
+    screens: {
+      OnboardingWelcome: 'onboarding',
+      OnboardingCoach: 'onboarding/coach',
+      OnboardingTracking: 'onboarding/tracking',
+      OnboardingProfile: 'onboarding/profile',
+      Main: {
+        path: '',
+        screens: {
+          Dashboard: 'dashboard',
+          Workout: 'workout',
+          Diet: 'diet',
+          Progress: 'progress',
+        },
+      },
+      ActiveWorkout: 'workout/active/:workoutId?',
+      ExercisePicker: 'workout/exercises',
+      RestTimer: 'workout/rest',
+      PostWorkout: 'workout/done/:workoutId?',
+      CoachChat: 'coach/:sessionId?',
+      FoodSearch: 'diet/search',
+      FoodDetail: 'diet/food/:foodId?',
+      Profile: 'profile',
+      Community: 'community',
+      Achievements: 'achievements',
+    },
   },
 };
 
@@ -75,7 +114,10 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={styles.root}>
-      <NavigationContainer theme={activeScheme === 'dark' ? LyftoraDarkTheme : LyftoraLightTheme}>
+      <NavigationContainer
+        theme={activeScheme === 'dark' ? LyftoraDarkTheme : LyftoraLightTheme}
+        linking={linking}
+      >
         <StatusBar style={activeScheme === 'dark' ? 'light' : 'dark'} />
         <RootNavigator />
       </NavigationContainer>

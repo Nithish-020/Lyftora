@@ -37,7 +37,9 @@ export type ThemeColors = {
   inputBackground: string;
 };
 
-function withAliases(theme: typeof lightTheme): ThemeColors {
+type BaseTheme = typeof lightTheme | typeof darkTheme;
+
+function withAliases(theme: BaseTheme): ThemeColors {
   return {
     ...theme,
     background: theme.bg,
