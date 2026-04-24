@@ -15,6 +15,7 @@ import {
 } from '../../components/light';
 import { LIcon } from '../../components/light/Icon';
 import type { RootStackScreenProps } from '../../types/navigation';
+import { useAuthStore } from '../../store/authStore';
 
 // ───────────────────────────────────────────────────────────────────
 // Onboarding is split into 4 stack routes so each step is deep-linkable
@@ -27,8 +28,9 @@ import type { RootStackScreenProps } from '../../types/navigation';
 // ═══════════════ STEP 1 — Welcome ═══════════════
 export function OnboardingWelcomeScreen({ navigation }: RootStackScreenProps<'OnboardingWelcome'>) {
   const insets = useSafeAreaInsets();
+  const completeOnboarding = useAuthStore((s) => s.completeOnboarding);
   const goNext = () => navigation.navigate('OnboardingCoach');
-  const signIn = () => navigation.replace('Main', { screen: 'Dashboard' });
+  const signIn = () => completeOnboarding({});
 
   return (
     <View style={{ flex: 1, backgroundColor: LL.bg }}>
@@ -74,8 +76,9 @@ export function OnboardingWelcomeScreen({ navigation }: RootStackScreenProps<'On
 // ═══════════════ STEP 2 — AI Coach intro ═══════════════
 export function OnboardingCoachScreen({ navigation }: RootStackScreenProps<'OnboardingCoach'>) {
   const insets = useSafeAreaInsets();
+  const completeOnboarding = useAuthStore((s) => s.completeOnboarding);
   const goNext = () => navigation.navigate('OnboardingTracking');
-  const skip = () => navigation.replace('Main', { screen: 'Dashboard' });
+  const skip = () => completeOnboarding({});
 
   return (
     <View style={{ flex: 1, backgroundColor: LL.bg, paddingTop: insets.top }}>
@@ -117,8 +120,9 @@ export function OnboardingCoachScreen({ navigation }: RootStackScreenProps<'Onbo
 // ═══════════════ STEP 3 — Tracking intro ═══════════════
 export function OnboardingTrackingScreen({ navigation }: RootStackScreenProps<'OnboardingTracking'>) {
   const insets = useSafeAreaInsets();
+  const completeOnboarding = useAuthStore((s) => s.completeOnboarding);
   const goNext = () => navigation.navigate('OnboardingProfile');
-  const skip = () => navigation.replace('Main', { screen: 'Dashboard' });
+  const skip = () => completeOnboarding({});
 
   return (
     <View style={{ flex: 1, backgroundColor: LL.bg, paddingTop: insets.top }}>
@@ -178,10 +182,15 @@ export function OnboardingTrackingScreen({ navigation }: RootStackScreenProps<'O
 // ═══════════════ STEP 4 — Profile setup ═══════════════
 export function OnboardingProfileScreen({ navigation }: RootStackScreenProps<'OnboardingProfile'>) {
   const insets = useSafeAreaInsets();
-  const finish = () => navigation.replace('Main', { screen: 'Dashboard' });
+  const completeOnboarding = useAuthStore((s) => s.completeOnboarding);
 
   const [exp, setExp] = useState('Intermediate');
   const [goal, setGoal] = useState('gain');
+
+  const finish = () => {
+    // Stash onboarding data locally; authStore will persist to backend after signup.
+    completeOnboarding({ experience: exp, goal });
+  };
   const goals = [
     { id: 'lose', label: 'Cut', sub: 'Lose fat', icon: 'trending_down' },
     { id: 'maintain', label: 'Hold', sub: 'Maintain', icon: 'balance' },

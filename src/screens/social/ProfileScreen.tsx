@@ -12,9 +12,11 @@ import {
   LPlaceholder,
   LEm,
   LSectionLabel,
+  LBtn,
 } from '../../components/light';
 import { LIcon } from '../../components/light/Icon';
 import type { RootStackScreenProps } from '../../types/navigation';
+import { signOut } from '../../services/auth';
 
 const STATS = [
   { v: '147', l: 'SESSIONS' },
@@ -120,6 +122,10 @@ export function ProfileScreen({ navigation }: RootStackScreenProps<'Profile'>) {
             </Pressable>
           ))}
         </LCard>
+      </View>
+
+      <View style={{ marginHorizontal: 16, marginBottom: 32 }}>
+        <LBtn label="Log out" variant="secondary" size="lg" block icon="logout" onPress={() => signOut()} />
       </View>
     </LScreen>
   );
