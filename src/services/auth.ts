@@ -1,6 +1,20 @@
+import { Platform } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { supabase } from './supabase';
+
+/**
+ * URL Supabase must redirect to after Google — must match a row in
+ * Dashboard → Authentication → URL Configuration → Redirect URLs.
+ * Expo Go uses exp://…; dev/standalone native builds use lyftora://…; web uses the current origin.
+ */
+function getGoogleOAuthRedirectTo(): string {
+  if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.origin) {
+    return new URL('auth/callback', `${window.location.origin}/`).toString();
+  }
+  // Explicit scheme for standalone; ignored in Expo Go in favor of `exp` (see expo-linking).
+  return Linking.createURL('auth/callback', { scheme: 'lyftora' });
+}
 
 export type OtpType = 'signup' | 'recovery' | 'email_change';
 
@@ -44,7 +58,7 @@ export async function signIn(params: { email: string; password: string }): Promi
 }
 
 export async function signInWithGoogle(): Promise<AuthResult> {
-  const redirectTo = Linking.createURL('auth/callback');
+  const redirectTo = getGoogleOAuthRedirectTo();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {

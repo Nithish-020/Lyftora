@@ -48,9 +48,17 @@ Dashboard → Authentication → Providers → Google.
 
 ## 5. Redirect URLs allowlist
 
-Dashboard → Authentication → URL Configuration → Redirect URLs. Add:
-- `lyftora://auth/callback`
-- `exp://` (for Expo Go during development, optional)
+Dashboard → **Authentication** → **URL Configuration**.
+
+**Site URL:** Set this to a URL you will never break during local testing if possible (for example your production `https://` app URL, or a placeholder `https://lyftora.app`). New Supabase projects default this to `http://localhost:3000`, but Expo does not serve the app on port 3000. If the OAuth return URL is missing from **Redirect URLs** or does not match what the app sends, the flow can end at that default Site URL and the browser will show *This site can’t be reached*.
+
+**Redirect URLs:** Add every URL the app will use after Google sign-in (must include the exact `redirectTo` the client sends, including path):
+
+- `lyftora://auth/callback` — iOS / Android **development** or **release** build (not Expo Go).
+- `exp://*/*` or `exp://` patterns — **Expo Go** (the app uses an `exp://<host>:8081/--/auth/callback` style URL; Supabase [supports wildcards](https://supabase.com/docs/guides/auth/redirect-urls) for this).
+- If you test **Expo web**, add your real dev origin, for example:
+  - `http://localhost:8081/*`
+  - (Use the port where Metro actually serves the app; it is not `3000` unless you configured it that way.)
 
 ## 6. Manual test checklist
 

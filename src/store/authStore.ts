@@ -1,12 +1,12 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
-import { createMMKV } from 'react-native-mmkv';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../services/supabase';
 import { upsertProfile } from '../services/auth';
 
-const storage = createMMKV({ id: 'lyftora-auth' });
-const KEY_ONBOARDED = 'onboarding_completed';
-const KEY_PENDING = 'pending_onboarding_data';
+// AsyncStorage (not MMKV) so auth persistence works in Expo Go — MMKV v4 + Nitro requires a dev build.
+const KEY_ONBOARDED = 'lyftora-auth/onboarding_completed';
+const KEY_PENDING = 'lyftora-auth/pending_onboarding_data';
 
 export type AuthStatus = 'loading' | 'onboarding' | 'unauthenticated' | 'authenticated';
 
@@ -30,8 +30,9 @@ interface AuthState {
   flushPendingOnboardingData: () => Promise<void>;
 }
 
-function hasCompletedOnboarding() {
-  return storage.getBoolean(KEY_ONBOARDED) === true;
+async function hasCompletedOnboarding() {
+  const v = await AsyncStorage.getItem(KEY_ONBOARDED);
+  return v === 'true';
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -48,7 +49,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ status: 'authenticated', session, user: session.user });
       await get().refreshProfile();
       await get().flushPendingOnboardingData();
-    } else if (hasCompletedOnboarding()) {
+    } else if (await hasCompletedOnboarding()) {
       set({ status: 'unauthenticated' });
     } else {
       set({ status: 'onboarding' });
@@ -60,20 +61,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         await get().refreshProfile();
         await get().flushPendingOnboardingData();
       } else if (event === 'SIGNED_OUT') {
-        set({ status: hasCompletedOnboarding() ? 'unauthenticated' : 'onboarding', session: null, user: null, profile: null });
+        const onboarded = await hasCompletedOnboarding();
+        set({ status: onboarded ? 'unauthenticated' : 'onboarding', session: null, user: null, profile: null });
       }
     });
   },
 
   completeOnboarding: (payload) => {
-    storage.set(KEY_ONBOARDED, true);
-    storage.set(KEY_PENDING, JSON.stringify(payload ?? {}));
-    if (get().status === 'onboarding') set({ status: 'unauthenticated' });
+    void (async () => {
+      await AsyncStorage.setItem(KEY_ONBOARDED, 'true');
+      await AsyncStorage.setItem(KEY_PENDING, JSON.stringify(payload ?? {}));
+      if (get().status === 'onboarding') set({ status: 'unauthenticated' });
+    })();
   },
 
   resetOnboarding: () => {
-    storage.remove(KEY_ONBOARDED);
-    storage.remove(KEY_PENDING);
+    void AsyncStorage.multiRemove([KEY_ONBOARDED, KEY_PENDING]);
   },
 
   refreshProfile: async () => {
@@ -98,13 +101,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   flushPendingOnboardingData: async () => {
     const user = get().user;
     if (!user) return;
-    const raw = storage.getString(KEY_PENDING);
+    const raw = await AsyncStorage.getItem(KEY_PENDING);
     if (!raw) return;
     let payload: unknown;
     try {
       payload = JSON.parse(raw);
     } catch {
-      storage.remove(KEY_PENDING);
+      await AsyncStorage.removeItem(KEY_PENDING);
       return;
     }
     const username = (user.user_metadata?.username as string | undefined) ?? null;
@@ -114,7 +117,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       onboardingData: payload,
     });
     if (result.ok) {
-      storage.remove(KEY_PENDING);
+      await AsyncStorage.removeItem(KEY_PENDING);
       await get().refreshProfile();
     }
   },
