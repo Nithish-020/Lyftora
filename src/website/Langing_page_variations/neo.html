@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lyftora — Neo Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07070B; --bg2:#0F0F18; --ink:#F5F3FF;
+  --neon:#A8FF35; --mag:#FF3DCB; --cyan:#5AF0FF; --amber:#FFB020;
+  --muted:#8B8BA8; --line:rgba(255,255,255,.08);
+  --sans:"Syne",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --serif:"Instrument Serif",Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased;line-height:1.5;
+  background-image:
+    radial-gradient(1000px 600px at 10% -10%, color-mix(in srgb,var(--mag) 18%,transparent), transparent 60%),
+    radial-gradient(800px 500px at 110% 0%, color-mix(in srgb,var(--cyan) 14%,transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+}
+img,svg{display:block;max-width:100%}
+button,input{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+::selection{background:var(--neon);color:#000}
+:focus-visible{outline:2px solid var(--neon);outline-offset:3px;border-radius:6px}
+
+.container{max-width:1280px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+
+/* Grid background */
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 20%, #000 40%, transparent 90%);
+}
+
+/* Scanline */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:repeating-linear-gradient(to bottom, rgba(255,255,255,.018) 0 1px, transparent 1px 3px);
+  mix-blend-mode:overlay;
+}
+
+/* Nav */
+.nav{position:fixed;top:14px;left:14px;right:14px;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px 10px 18px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:color-mix(in srgb,var(--bg) 70%,transparent);
+  backdrop-filter:blur(16px);
+}
+.brand{font-family:var(--sans);font-weight:800;letter-spacing:-.02em;font-size:22px;display:inline-flex;align-items:center;gap:8px}
+.brand .bracket{color:var(--neon)}
+.nav-links{display:none;gap:22px;font-size:13px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.nav-links a:hover{color:var(--neon)}
+@media (min-width:900px){.nav-links{display:inline-flex}}
+.nav-cta{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:10px 18px;border-radius:999px;background:var(--neon);color:#000;
+  transition:transform .15s,box-shadow .2s}
+.nav-cta:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--mag)}
+
+/* Hero */
+.hero{position:relative;padding:120px 0 80px;z-index:2}
+.hp-badge{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,#fff 3%,transparent);font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.hp-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--neon);box-shadow:0 0 12px var(--neon);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{transform:scale(1.4);opacity:.6}}
+
+.hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(56px,11vw,180px);line-height:.85;letter-spacing:-.04em;margin:24px 0 16px}
+.hero h1 .glitch{position:relative;display:inline-block;color:var(--ink)}
+.hero h1 .glitch::before,.hero h1 .glitch::after{content:attr(data-t);position:absolute;inset:0;opacity:.8}
+.hero h1 .glitch::before{color:var(--mag);transform:translate(-3px,0);mix-blend-mode:screen;animation:glitch 3s infinite}
+.hero h1 .glitch::after{color:var(--cyan);transform:translate(3px,0);mix-blend-mode:screen;animation:glitch 3.4s infinite reverse}
+@keyframes glitch{0%,92%,100%{transform:translate(-3px,0)}93%{transform:translate(-6px,2px)}95%{transform:translate(3px,-2px)}97%{transform:translate(-2px,-1px)}}
+.hero h1 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--neon)}
+.hero p.lead{max-width:56ch;font-size:18px;color:color-mix(in srgb,var(--ink) 75%,transparent);margin-bottom:28px}
+
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;font-family:var(--mono);letter-spacing:.06em;font-size:13px;text-transform:uppercase;transition:transform .15s,box-shadow .2s}
+.btn-primary{background:var(--neon);color:#000}
+.btn-primary:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--mag)}
+.btn-ghost{border:1px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--neon);color:var(--neon)}
+
+/* HUD cards */
+.hud{display:grid;grid-template-columns:1fr;gap:14px;margin-top:72px}
+@media (min-width:900px){.hud{grid-template-columns:1.2fr .9fr 1fr;grid-auto-rows:260px}}
+.card{position:relative;padding:22px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,#fff 3%,transparent),transparent),var(--bg2);overflow:hidden}
+.card .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.card h3{font-family:var(--sans);font-weight:700;font-size:24px;line-height:1.1;margin-bottom:10px}
+
+/* Streak flame */
+.streak{grid-row:span 1;background:linear-gradient(160deg,#1A0F20,#0F0F18);border-color:color-mix(in srgb,var(--mag) 30%,var(--line))}
+.flame{position:relative;width:100px;height:120px;margin:10px auto}
+.flame::before,.flame::after{content:"";position:absolute;inset:0;border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;transform-origin:50% 100%;filter:blur(2px)}
+.flame::before{background:radial-gradient(ellipse at 50% 80%,var(--amber) 0%,var(--mag) 45%,transparent 70%);animation:flicker 1.3s ease-in-out infinite alternate}
+.flame::after{background:radial-gradient(ellipse at 50% 80%,#FFF5D5 0%,var(--amber) 40%,transparent 65%);transform:scale(.6) translateY(14px);animation:flicker 1s ease-in-out infinite alternate-reverse}
+@keyframes flicker{0%{transform:scale(1) rotate(-2deg)}100%{transform:scale(1.08) rotate(3deg)}}
+.streak .num{font-family:var(--sans);font-weight:800;font-size:72px;letter-spacing:-.03em;text-align:center;line-height:1;background:linear-gradient(180deg,#fff,var(--amber));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.streak .sub{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* PR unlock */
+.pr{border-color:color-mix(in srgb,var(--neon) 30%,var(--line))}
+.pr .bigw{font-family:var(--sans);font-weight:800;font-size:72px;line-height:1;letter-spacing:-.03em;color:var(--neon);font-variant-numeric:tabular-nums}
+.pr .bigw small{font-family:var(--mono);font-size:14px;color:var(--muted);margin-left:4px}
+.waves{display:flex;gap:4px;align-items:flex-end;height:50px;margin-top:14px}
+.waves i{display:block;flex:1;background:linear-gradient(180deg,var(--neon),var(--cyan));border-radius:2px;animation:wave 1.2s ease-in-out infinite}
+.waves i:nth-child(1){animation-delay:.0s}
+.waves i:nth-child(2){animation-delay:.08s}
+.waves i:nth-child(3){animation-delay:.16s}
+.waves i:nth-child(4){animation-delay:.24s}
+.waves i:nth-child(5){animation-delay:.32s}
+.waves i:nth-child(6){animation-delay:.4s}
+.waves i:nth-child(7){animation-delay:.48s}
+.waves i:nth-child(8){animation-delay:.56s}
+.waves i:nth-child(9){animation-delay:.64s}
+.waves i:nth-child(10){animation-delay:.72s}
+@keyframes wave{0%,100%{height:10%}50%{height:100%}}
+
+/* Achievement */
+.ach{grid-row:span 1;background:linear-gradient(160deg,#0F1E14,#0F0F18);border-color:color-mix(in srgb,var(--cyan) 30%,var(--line));display:flex;flex-direction:column;gap:10px}
+.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+.medal{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;position:relative;cursor:pointer;transition:transform .2s}
+.medal:hover{transform:scale(1.12) rotate(-4deg)}
+.medal.gold{background:radial-gradient(circle at 35% 30%,#FFE38A,#C78A00);color:#3A2300;box-shadow:inset 0 0 0 3px #FFF2B2,0 0 12px color-mix(in srgb,var(--amber) 60%,transparent)}
+.medal.silver{background:radial-gradient(circle at 35% 30%,#F0F0F5,#8B8B9B);color:#15151E;box-shadow:inset 0 0 0 3px #FFFFFF}
+.medal.locked{background:#181826;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+.medal.pop{animation:medal-pop .7s cubic-bezier(.3,1.8,.5,1) 1}
+@keyframes medal-pop{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.3) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
+
+/* Sticky scroll pin section */
+.pin{position:relative;padding:80px 0}
+.pin-inner{position:sticky;top:100px}
+.pin-title{font-family:var(--sans);font-weight:800;font-size:clamp(40px,6vw,84px);line-height:.95;letter-spacing:-.03em;margin-bottom:20px}
+.pin-title em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--neon)}
+
+/* Steps */
+.steps{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:900px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{padding:24px;border-radius:20px;border:1px solid var(--line);background:color-mix(in srgb,#fff 2%,transparent);position:relative}
+.step .n{font-family:var(--sans);font-weight:800;font-size:80px;letter-spacing:-.04em;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--neon)}
+.step h4{font-family:var(--sans);font-weight:700;font-size:22px;margin:8px 0 8px}
+.step p{color:var(--muted);font-size:14.5px}
+
+/* Chat full section */
+.chat-wrap{position:relative;padding:100px 0;border-top:1px solid var(--line)}
+.chat-ui{max-width:720px;margin:40px auto 0;background:var(--bg2);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
+.chat-topbar{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,var(--neon) 8%,transparent),transparent)}
+.chat-topbar .ava{width:36px;height:36px;border-radius:50%;background:conic-gradient(from 140deg,var(--neon),var(--cyan),var(--mag),var(--neon));padding:2px}
+.chat-topbar .ava i{display:block;width:100%;height:100%;border-radius:50%;background:var(--bg2);display:grid;place-items:center;font-family:var(--serif);font-style:italic;color:var(--neon);font-size:16px;font-style:italic}
+.chat-topbar strong{font-family:var(--sans);font-weight:700;font-size:15px}
+.chat-topbar small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.chat-topbar .live{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--neon);display:inline-flex;align-items:center;gap:6px}
+.chat-topbar .live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 8px var(--neon)}
+.chat-body{padding:20px;min-height:360px;display:flex;flex-direction:column;gap:10px}
+.bb{max-width:82%;padding:10px 14px;font-size:14.5px;border-radius:14px;line-height:1.5}
+.bb.user{align-self:flex-end;background:color-mix(in srgb,var(--cyan) 16%,transparent);border:1px solid color-mix(in srgb,var(--cyan) 30%,transparent);color:var(--ink);border-bottom-right-radius:4px}
+.bb.coach{align-self:flex-start;background:color-mix(in srgb,var(--neon) 14%,transparent);border:1px solid color-mix(in srgb,var(--neon) 30%,transparent);color:var(--ink);border-bottom-left-radius:4px}
+.bb .cursor-blink{display:inline-block;width:9px;height:16px;background:var(--neon);margin-left:2px;animation:blink 1s steps(1) infinite;vertical-align:-2px}
+@keyframes blink{50%{opacity:0}}
+.typing{align-self:flex-start;display:inline-flex;gap:4px;padding:12px 14px;background:color-mix(in srgb,var(--neon) 14%,transparent);border:1px solid color-mix(in srgb,var(--neon) 30%,transparent);border-radius:14px;border-bottom-left-radius:4px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--neon);animation:td 1.1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes td{0%,60%,100%{opacity:.4;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:color-mix(in srgb,#fff 2%,transparent)}
+.chat-input input{flex:1;padding:10px 14px;border-radius:999px;background:color-mix(in srgb,#fff 4%,transparent);border:1px solid var(--line);outline:none;font-size:14px}
+.chat-input input:focus{border-color:var(--neon)}
+.chat-input button{padding:10px 18px;border-radius:999px;background:var(--neon);color:#000;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.quick-row{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 14px}
+.quick-row button{padding:6px 12px;border-radius:999px;border:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.quick-row button:hover{border-color:var(--neon);color:var(--neon)}
+
+/* Achievement toast */
+.toast{position:fixed;bottom:24px;right:24px;z-index:80;display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg2);border:1px solid color-mix(in srgb,var(--neon) 40%,var(--line));border-radius:16px;transform:translateX(120%);transition:transform .5s cubic-bezier(.2,1.6,.4,1);box-shadow:0 20px 40px -10px rgba(0,0,0,.6)}
+.toast.show{transform:translateX(0)}
+.toast .medal{width:42px;height:42px;font-size:8px}
+.toast .t-copy{display:flex;flex-direction:column}
+.toast .t-copy small{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.toast .t-copy strong{font-size:14px}
+
+/* Pricing (subscription) */
+.pricing{padding:120px 0;position:relative;z-index:2}
+.price-head{text-align:center;max-width:640px;margin:0 auto 48px}
+.price-head h2{font-family:var(--sans);font-weight:800;font-size:clamp(40px,6vw,80px);line-height:.95;letter-spacing:-.03em;margin-bottom:12px}
+.price-head h2 em{font-family:var(--serif);font-style:italic;color:var(--neon);font-weight:400}
+.price-toggle{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,#fff 3%,transparent);margin-top:16px;font-family:var(--mono);font-size:12px}
+.price-toggle button{padding:8px 18px;border-radius:999px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted);transition:all .2s}
+.price-toggle button.active{background:var(--neon);color:#000}
+.plans{display:grid;grid-template-columns:1fr;gap:16px;max-width:1040px;margin:0 auto}
+@media (min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
+.plan{padding:28px;border-radius:24px;border:1px solid var(--line);background:color-mix(in srgb,#fff 2%,transparent);display:flex;flex-direction:column;gap:14px;position:relative;transition:transform .25s,border-color .25s}
+.plan:hover{transform:translateY(-4px);border-color:var(--neon)}
+.plan.featured{border-color:var(--neon);background:linear-gradient(180deg,color-mix(in srgb,var(--neon) 10%,transparent),transparent)}
+.plan .tag{position:absolute;top:-12px;right:18px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--neon);color:#000}
+.plan .pname{font-family:var(--sans);font-weight:800;font-size:22px}
+.plan .pprice{font-family:var(--sans);font-weight:800;font-size:56px;line-height:1;letter-spacing:-.03em;display:flex;align-items:baseline;gap:6px}
+.plan .pprice small{font-family:var(--mono);font-size:13px;color:var(--muted);font-weight:500}
+.plan ul{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.plan li{font-size:14px;color:var(--muted);display:flex;gap:8px}
+.plan li::before{content:"→";color:var(--neon);font-weight:700}
+.plan .cta{margin-top:auto;padding:12px 16px;border-radius:999px;border:1px solid var(--line);font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;transition:all .2s}
+.plan.featured .cta{background:var(--neon);color:#000;border-color:var(--neon)}
+.plan .cta:hover{background:var(--mag);color:#000;border-color:var(--mag)}
+
+/* Footer */
+footer{padding:80px 0 40px;border-top:1px solid var(--line);position:relative;z-index:2}
+.foot-word{font-family:var(--sans);font-weight:800;font-size:clamp(80px,16vw,220px);letter-spacing:-.05em;line-height:.9;background:linear-gradient(180deg,var(--ink),transparent);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.foot-word span{color:var(--neon);-webkit-text-fill-color:var(--neon)}
+.foot-row{margin-top:24px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.reveal.is-visible{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* variation switcher */
+.swap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:90;display:flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(12px);box-shadow:0 12px 30px -10px rgba(0,0,0,.5)}
+.swap a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;color:var(--muted)}
+.swap a.on{background:var(--neon);color:#000}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav">
+  <a href="#top" class="brand">Lyftora<span class="bracket">_</span></a>
+  <div class="nav-links">
+    <a href="#features">How it works</a>
+    <a href="#coach">Coach</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Start free</a>
+</nav>
+
+<div class="swap">
+  <a href="index.html">V0</a>
+  <a href="neo.html" class="on">Neo Arcade</a>
+  <a href="studio.html">Soft Studio</a>
+</div>
+
+<main id="top">
+
+<section class="hero">
+  <div class="container">
+    <span class="hp-badge"><span class="dot"></span>ACHIEVEMENT UNLOCKED · AI COACH V2</span>
+    <h1>
+      <span class="glitch" data-t="Level up">Level up</span><br/>
+      <span>your <em>grind.</em></span>
+    </h1>
+    <p class="lead">An AI coach that learns from every rep. A streak engine that rewards showing up. A chat that replies in real time — not in next month's update.</p>
+    <div class="cta-row">
+      <a href="#pricing" class="btn btn-primary">Press start →</a>
+      <a href="#coach" class="btn btn-ghost">Try the coach</a>
+    </div>
+
+    <div class="hud">
+      <!-- Streak -->
+      <div class="card streak">
+        <div class="kicker"><span>Streak</span><span style="color:var(--mag)">● ACTIVE</span></div>
+        <div class="flame"></div>
+        <div class="num" id="streak-n">0</div>
+        <div class="sub">Day streak · Keep going</div>
+      </div>
+      <!-- PR -->
+      <div class="card pr">
+        <div class="kicker"><span>New PR</span><span id="pr-name">Bench press</span></div>
+        <h3>Personal record, broken.</h3>
+        <div class="bigw"><span id="pr-w">0</span><small>kg × 5</small></div>
+        <div class="waves">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <button id="pr-smash" class="btn btn-ghost" style="margin-top:14px;padding:8px 14px;font-size:11px">Smash another ↑</button>
+      </div>
+      <!-- Achievements -->
+      <div class="card ach">
+        <div class="kicker"><span>Badges</span><span>6 / 24</span></div>
+        <h3>Earn. Flex. Repeat.</h3>
+        <div class="ach-grid" id="ach-grid">
+          <div class="medal gold" title="First 100kg">100</div>
+          <div class="medal gold" title="7 day streak">7D</div>
+          <div class="medal silver" title="10 workouts">10W</div>
+          <div class="medal silver" title="5k steps">5K</div>
+          <div class="medal locked">?</div>
+          <div class="medal locked">?</div>
+          <div class="medal locked">?</div>
+          <div class="medal locked">?</div>
+        </div>
+        <button id="unlock" class="btn btn-ghost" style="margin-top:10px;padding:8px 14px;font-size:11px">Unlock next →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sticky pin feature section -->
+<section class="pin" id="features">
+  <div class="container">
+    <div class="reveal" style="max-width:720px;margin-bottom:48px">
+      <span class="kicker" style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">——  How it plays</span>
+      <h2 class="pin-title" style="margin-top:12px">Three <em>moves.</em> One result.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">01</div><h4>Set your quest.</h4><p>Tell Coach your goal. Weight, time, equipment. It builds a plan in 4 seconds.</p></div>
+      <div class="step reveal"><div class="n">02</div><h4>Play your set.</h4><p>Log reps in one tap. The coach watches your volume and adjusts tomorrow.</p></div>
+      <div class="step reveal"><div class="n">03</div><h4>Collect the XP.</h4><p>Every session stacks a streak. Every PR unlocks a badge. Every week, a level.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Chat -->
+<section class="chat-wrap" id="coach">
+  <div class="container">
+    <div style="max-width:680px;margin:0 auto;text-align:center">
+      <span class="hp-badge" style="margin-bottom:16px"><span class="dot"></span>REAL TIME · STREAMING TOKENS</span>
+      <h2 class="pin-title">Talk to your <em>coach.</em></h2>
+      <p style="color:var(--muted);margin-top:12px">Not scripted. Not canned. Try it — the reply streams in, word by word, just like the app.</p>
+    </div>
+
+    <div class="chat-ui">
+      <div class="chat-topbar">
+        <div class="ava"><i>L</i></div>
+        <div>
+          <strong>Coach</strong>
+          <small>Claude 4 · knows your plan</small>
+        </div>
+        <span class="live">STREAMING</span>
+      </div>
+      <div class="chat-body" id="cbody">
+        <div class="bb coach">Hey — what's today's question? Pick a prompt below or type your own.</div>
+      </div>
+      <div class="quick-row">
+        <button data-q="I'm sore from yesterday. Should I lift today?">Sore today?</button>
+        <button data-q="Plan a 30-minute home workout with dumbbells.">Quick home workout</button>
+        <button data-q="How do I break a bench press plateau at 90kg?">Bench plateau</button>
+        <button data-q="High protein meals I can prep in 20 minutes?">Meal prep</button>
+      </div>
+      <div class="chat-input">
+        <input id="cinput" type="text" placeholder="Ask your coach anything…"/>
+        <button id="csend">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing (subscription) -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="price-head reveal">
+      <span class="hp-badge"><span class="dot"></span>MEMBERSHIP · CANCEL ANYTIME</span>
+      <h2>Pick your <em>tier.</em></h2>
+      <p style="color:var(--muted)">Start free. Upgrade when the coach starts paying for itself. Cancel in two taps.</p>
+      <div class="price-toggle" role="tablist">
+        <button class="active" data-bill="month">Monthly</button>
+        <button data-bill="year">Yearly · save 30%</button>
+      </div>
+    </div>
+
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="pname">Rookie</div>
+        <div class="pprice"><span data-price-m="0" data-price-y="0">₹0</span><small>forever</small></div>
+        <ul>
+          <li>Workout logger</li>
+          <li>Basic stats &amp; streak</li>
+          <li>100 foods (global)</li>
+          <li>1 coach message / day</li>
+        </ul>
+        <a href="#" class="cta">Start free</a>
+      </div>
+
+      <div class="plan featured reveal">
+        <span class="tag">Most picked</span>
+        <div class="pname">Pro</div>
+        <div class="pprice">
+          <span data-price-m="299" data-price-y="209">₹299</span>
+          <small><span data-bill-suffix>/month</span></small>
+        </div>
+        <ul>
+          <li>Unlimited AI coach</li>
+          <li>Full PR + streak engine</li>
+          <li>All 1,000+ foods (global + regional)</li>
+          <li>Adaptive weekly planning</li>
+          <li>Every update, included</li>
+        </ul>
+        <a href="#" class="cta">Go Pro</a>
+      </div>
+
+      <div class="plan reveal">
+        <div class="pname">Team</div>
+        <div class="pprice">
+          <span data-price-m="799" data-price-y="559">₹799</span>
+          <small><span data-bill-suffix>/month</span></small>
+        </div>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>Up to 5 seats</li>
+          <li>Shared training boards</li>
+          <li>Group streak + leaderboard</li>
+          <li>Priority coach replies</li>
+        </ul>
+        <a href="#" class="cta">Start team</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-word">LYFT<span>ORA.</span></div>
+    <div class="foot-row">
+      <span>© 2026 Lyftora · Built for the next rep.</span>
+      <span>v2.0 NEO · May 2026</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<div class="toast" id="toast">
+  <div class="medal gold">NEW</div>
+  <div class="t-copy">
+    <small>Achievement</small>
+    <strong id="toast-text">Streak Started · 1 day</strong>
+  </div>
+</div>
+
+<script>
+// Reveal
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Streak count up — grows as you scroll
+(()=>{
+  const n=document.getElementById('streak-n');
+  const target=37;
+  let shown=0;
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        let i=0;const t=setInterval(()=>{i++;n.textContent=i;if(i>=target){clearInterval(t);toast('Streak Started · '+target+' days')}},40);
+        obs.disconnect();
+      }
+    })
+  },{rootMargin:'0px 0px -20% 0px'});
+  obs.observe(n);
+})();
+
+// PR counter + smash
+(()=>{
+  const w=document.getElementById('pr-w');
+  const name=document.getElementById('pr-name');
+  const btn=document.getElementById('pr-smash');
+  const lifts=['Bench press','Back squat','Deadlift','Overhead press','Pull-up weighted'];
+  let current=90, li=0;
+  function count(to){
+    const from=parseInt(w.textContent,10)||0;
+    const dur=900;const s=performance.now();
+    function step(t){
+      const p=Math.min(1,(t-s)/dur);
+      const e=1-Math.pow(1-p,3);
+      w.textContent=Math.round(from+(to-from)*e);
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){count(92.5);obs.disconnect()}})},{rootMargin:'0px 0px -20% 0px'});
+  obs.observe(w);
+  btn.addEventListener('click',()=>{
+    current+=2.5;li=(li+1)%lifts.length;name.textContent=lifts[li];count(current);
+    toast('New PR · '+lifts[li]+' '+current+'kg');
+  });
+})();
+
+// Achievement grid
+(()=>{
+  const btn=document.getElementById('unlock');
+  const grid=document.getElementById('ach-grid');
+  const names=['1M','PR','3X','🔥','🥇','💎','⚡','🎯'];
+  const titles=['1-month streak','New PR','3x/week','On fire','Gold medal','Diamond','Lightning','Goal hit'];
+  let i=0;
+  btn.addEventListener('click',()=>{
+    const locked=grid.querySelector('.medal.locked');
+    if(!locked)return;
+    locked.classList.remove('locked');
+    locked.classList.add(i%2?'silver':'gold','pop');
+    locked.textContent=names[i%names.length];
+    locked.title=titles[i%titles.length];
+    toast('Badge unlocked · '+titles[i%titles.length]);
+    i++;
+  });
+})();
+
+// Toast
+let tTimer;
+function toast(text){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-text').textContent=text;
+  t.classList.add('show');
+  clearTimeout(tTimer);
+  tTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// Real-time chat streaming
+(()=>{
+  const body=document.getElementById('cbody');
+  const input=document.getElementById('cinput');
+  const send=document.getElementById('csend');
+  const quick=document.querySelectorAll('.quick-row button');
+
+  const replies={
+    "I'm sore from yesterday. Should I lift today?":
+      "Listen to the soreness but don't skip. Swap to an active recovery day: 20 min brisk walk, mobility flow, and a light upper-body pump at 50% of your normal weight. Protein 1.8g/kg today. Come back fresh for squats tomorrow.",
+    "Plan a 30-minute home workout with dumbbells.":
+      "30-min dumbbell circuit, 3 rounds, 40s work / 20s rest. Goblet squats, DB rows, push-ups, DB thrusters, reverse lunges. Finisher: 2 min plank + mountain climbers. I'll log it to your Friday slot — sound good?",
+    "How do I break a bench press plateau at 90kg?":
+      "Two-week wave. Week 1: 5×3 at 92kg, pause reps. Week 2: drop to 80kg, 4×8 with tempo (3-1-1). Add one close-grip bench day for triceps. Eat in a 200 kcal surplus. You'll hit 95 on week 3.",
+    "High protein meals I can prep in 20 minutes?":
+      "Three for the week: 1) Greek yogurt + whey + berries (40g P). 2) Paneer-tofu bhurji wraps (38g P). 3) Sheet-pan chicken + chickpea + paprika (52g P). I'll send shopping list to your inbox."
+  };
+
+  function addUser(t){
+    const d=document.createElement('div');d.className='bb user';d.textContent=t;body.appendChild(d);body.scrollTop=body.scrollHeight;
+  }
+  function showTyping(){
+    const t=document.createElement('div');t.className='typing';t.id='typing';t.innerHTML='<span></span><span></span><span></span>';body.appendChild(t);body.scrollTop=body.scrollHeight;
+  }
+  function hideTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+  async function streamReply(q){
+    const canned=replies[q]||"Good question. Give me 24 hours of your data and I'll pattern-match it against a plan. In the meantime — keep protein high and sleep above 7 hours. Small compounding wins beat perfect plans.";
+    showTyping();
+    await wait(700);
+    hideTyping();
+    const bb=document.createElement('div');bb.className='bb coach';bb.innerHTML='<span></span><span class="cursor-blink"></span>';body.appendChild(bb);
+    const span=bb.querySelector('span');
+    const tokens=canned.split(' ');
+    for(let i=0;i<tokens.length;i++){
+      span.textContent+=(i?' ':'')+tokens[i];
+      body.scrollTop=body.scrollHeight;
+      await wait(45+Math.random()*40);
+    }
+    bb.querySelector('.cursor-blink')?.remove();
+    toast('Coach responded · XP +5');
+  }
+  function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+
+  function submit(q){if(!q)return;addUser(q);input.value='';streamReply(q)}
+  send.addEventListener('click',()=>submit(input.value.trim()));
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')submit(input.value.trim())});
+  quick.forEach(b=>b.addEventListener('click',()=>submit(b.dataset.q)));
+})();
+
+// Pricing billing toggle
+(()=>{
+  const btns=document.querySelectorAll('.price-toggle button');
+  const nums=document.querySelectorAll('[data-price-m]');
+  const suffixes=document.querySelectorAll('[data-bill-suffix]');
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    btns.forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    const yr=b.dataset.bill==='year';
+    nums.forEach(n=>{
+      const v=yr?n.dataset.priceY:n.dataset.priceM;
+      n.textContent='₹'+parseInt(v).toLocaleString();
+    });
+    suffixes.forEach(s=>s.textContent=yr?'/month · billed yearly':'/month');
+  }));
+})();
+</script>
+</body>
+</html>

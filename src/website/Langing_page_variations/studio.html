@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lyftora — Soft Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#F7F1E8; --paper:#FBF6EE; --ink:#1A1814;
+  --peach:#FFB68E; --rose:#F28BA8; --sage:#9FC49A; --sky:#A8C7E8; --butter:#F6D68A; --ube:#C7A7E8;
+  --line:rgba(26,24,20,.12); --muted:#6B6459;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Plus Jakarta Sans",system-ui,sans-serif;
+  --hand:"Caveat",cursive;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased;line-height:1.55;
+  background-image:
+    radial-gradient(800px 500px at 10% -5%, color-mix(in srgb,var(--peach) 45%,transparent), transparent 60%),
+    radial-gradient(700px 500px at 110% 10%, color-mix(in srgb,var(--sky) 45%,transparent), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, color-mix(in srgb,var(--butter) 50%,transparent), transparent 60%);
+}
+/* paper grain */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.3  0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+img,svg{display:block;max-width:100%}
+button,input{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+::selection{background:var(--peach)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+
+.container{max-width:1240px;margin-inline:auto;padding-inline:clamp(20px,4vw,40px)}
+
+/* Switcher */
+.swap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:90;display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);box-shadow:0 12px 30px -10px rgba(26,24,20,.2)}
+.swap a{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.04em;padding:8px 14px;border-radius:999px;color:var(--muted)}
+.swap a.on{background:var(--ink);color:var(--paper)}
+
+/* Nav */
+.nav{position:fixed;top:14px;left:14px;right:14px;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:10px 12px 10px 20px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--paper) 75%,transparent);backdrop-filter:blur(12px)}
+.brand{font-family:var(--serif);font-weight:800;letter-spacing:-.02em;font-size:24px;display:inline-flex;align-items:baseline;gap:2px}
+.brand em{font-style:italic;font-weight:400;color:var(--rose)}
+.nav-links{display:none;gap:26px;font-size:14px;font-weight:500;color:var(--muted)}
+.nav-links a:hover{color:var(--ink)}
+@media (min-width:900px){.nav-links{display:inline-flex}}
+.nav-cta{font-size:13px;font-weight:700;padding:10px 18px;border-radius:999px;background:var(--ink);color:var(--paper);transition:transform .3s cubic-bezier(.2,1.8,.4,1)}
+.nav-cta:hover{transform:scale(1.06) rotate(-2deg)}
+
+/* Hero */
+.hero{padding:140px 0 60px;position:relative;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;border-radius:999px;background:var(--paper);border:1px solid var(--line);font-size:12.5px;font-weight:500;color:var(--muted)}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--sage);animation:breath 2.2s ease-in-out infinite}
+@keyframes breath{50%{transform:scale(1.4);opacity:.5}}
+
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,10vw,168px);line-height:.92;letter-spacing:-.03em;margin:22px 0 20px;max-width:15ch}
+.hero h1 em{font-style:italic;color:var(--rose)}
+.hero h1 .under{position:relative;display:inline-block}
+.hero h1 .under::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.08em;height:.22em;background:var(--butter);border-radius:10px;z-index:-1;transform:scaleX(0);transform-origin:left;animation:underline 1.2s cubic-bezier(.2,.9,.3,1) .4s forwards}
+@keyframes underline{to{transform:scaleX(1)}}
+.hero h1 .wiggle{display:inline-block;transform-origin:50% 90%;animation:wiggle 4s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.hero p.lead{max-width:56ch;font-size:19px;color:var(--muted);margin-bottom:32px}
+.hand-note{font-family:var(--hand);font-size:30px;color:var(--rose);transform:rotate(-4deg);display:inline-block;margin-bottom:-10px}
+.hand-note svg{display:inline-block;vertical-align:middle;margin-left:6px}
+
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;font-size:15px;transition:transform .3s cubic-bezier(.2,1.8,.4,1)}
+.btn-primary{background:var(--ink);color:var(--paper)}
+.btn-primary:hover{transform:translateY(-2px) scale(1.03)}
+.btn-ghost{background:var(--paper);border:1px solid var(--line)}
+.btn-ghost:hover{transform:translateY(-2px) scale(1.03);background:var(--butter)}
+
+/* Hero collage */
+.collage{margin-top:72px;display:grid;gap:18px;grid-template-columns:1fr;position:relative}
+@media (min-width:900px){.collage{grid-template-columns:1.3fr .8fr 1fr;grid-auto-rows:280px}}
+
+.note{position:relative;padding:22px;border-radius:28px;background:var(--paper);border:1px solid var(--line);box-shadow:0 2px 0 var(--line),0 20px 40px -20px rgba(26,24,20,.12);transition:transform .4s cubic-bezier(.2,1.6,.4,1)}
+.note:hover{transform:translateY(-6px) rotate(var(--hover,-1deg))}
+.note .tape{position:absolute;top:-10px;left:40px;width:68px;height:22px;background:color-mix(in srgb,var(--butter) 80%,transparent);border-radius:2px;transform:rotate(-3deg);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.note .k{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+
+/* Streak calendar */
+.card-streak{background:color-mix(in srgb,var(--peach) 35%,var(--paper));--hover:-2deg}
+.card-streak h3{font-family:var(--serif);font-weight:400;font-size:28px;letter-spacing:-.02em;margin-bottom:6px}
+.card-streak h3 em{font-style:italic;color:#9C3F2C}
+.calendar{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;margin-top:14px}
+.calendar i{aspect-ratio:1;border-radius:6px;background:color-mix(in srgb,var(--ink) 6%,transparent);transition:background .4s,transform .4s}
+.calendar i.on{background:var(--rose)}
+.calendar i.today{background:var(--ink);transform:scale(1.12)}
+.streak-stat{display:flex;align-items:baseline;gap:10px;margin-top:14px}
+.streak-stat .num{font-family:var(--serif);font-weight:600;font-size:54px;letter-spacing:-.03em;line-height:1}
+.streak-stat .num em{font-style:italic;color:var(--rose)}
+.streak-stat .lbl{font-size:13px;color:var(--muted)}
+
+/* PR trophy */
+.card-pr{background:color-mix(in srgb,var(--butter) 45%,var(--paper));--hover:2deg;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.trophy{width:94px;height:110px;position:relative;filter:drop-shadow(0 10px 14px rgba(120,80,0,.22))}
+.trophy svg{width:100%;height:100%}
+.trophy.burst::after{content:"";position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle, color-mix(in srgb,var(--butter) 90%,transparent) 0%, transparent 70%);animation:pop .9s ease-out forwards}
+@keyframes pop{0%{transform:scale(0);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.card-pr h4{font-family:var(--serif);font-size:22px;font-weight:400;font-style:italic}
+.card-pr .big{font-family:var(--serif);font-weight:800;font-size:48px;line-height:1;letter-spacing:-.03em}
+.card-pr .big small{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);margin-left:4px}
+
+/* Achievement stickers */
+.card-ach{background:color-mix(in srgb,var(--sage) 30%,var(--paper));--hover:-1deg}
+.stickers{position:relative;height:160px;margin:12px 0}
+.sticker{position:absolute;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.02em;text-align:center;color:var(--ink);transition:transform .4s cubic-bezier(.2,1.8,.4,1);box-shadow:0 6px 14px rgba(26,24,20,.12);cursor:pointer;padding:6px}
+.sticker:hover{transform:scale(1.15) rotate(8deg) !important;z-index:5}
+.sticker.s1{left:4%;top:10%;background:var(--peach);transform:rotate(-10deg)}
+.sticker.s2{left:36%;top:0;background:var(--rose);transform:rotate(6deg);color:#fff}
+.sticker.s3{left:66%;top:18%;background:var(--ube);transform:rotate(-4deg)}
+.sticker.s4{left:12%;top:54%;background:var(--butter);transform:rotate(8deg)}
+.sticker.s5{left:44%;top:64%;background:var(--sky);transform:rotate(-8deg)}
+.sticker.s6{left:74%;top:58%;background:var(--sage);transform:rotate(5deg)}
+.sticker.new{animation:sticker-in .8s cubic-bezier(.2,1.8,.4,1)}
+@keyframes sticker-in{0%{transform:scale(0) rotate(-40deg)}60%{transform:scale(1.2) rotate(20deg)}100%{transform:scale(1) rotate(var(--r,0))}}
+
+/* Section */
+section.block{padding:100px 0;position:relative;z-index:2}
+.section-title{font-family:var(--serif);font-weight:400;font-size:clamp(40px,6vw,84px);line-height:.96;letter-spacing:-.025em;max-width:18ch}
+.section-title em{font-style:italic;color:var(--rose)}
+.section-kicker{font-family:var(--hand);font-size:32px;color:var(--rose);transform:rotate(-3deg);display:inline-block;margin-bottom:4px}
+
+/* How it works — the studio journey */
+.journey{display:grid;grid-template-columns:1fr;gap:20px;margin-top:40px}
+@media (min-width:900px){.journey{grid-template-columns:repeat(3,1fr)}}
+.journey .step{padding:28px;border-radius:28px;background:var(--paper);border:1px solid var(--line);position:relative;transition:transform .35s cubic-bezier(.2,1.6,.4,1)}
+.journey .step:hover{transform:translateY(-6px)}
+.journey .step .num{font-family:var(--serif);font-style:italic;font-weight:400;font-size:90px;line-height:.9;color:var(--rose);opacity:.4}
+.journey .step h4{font-family:var(--serif);font-size:26px;font-weight:600;letter-spacing:-.02em;margin:8px 0 6px}
+.journey .step p{color:var(--muted);font-size:15px}
+.journey .step:nth-child(1){background:color-mix(in srgb,var(--peach) 20%,var(--paper))}
+.journey .step:nth-child(2){background:color-mix(in srgb,var(--sage) 22%,var(--paper))}
+.journey .step:nth-child(3){background:color-mix(in srgb,var(--ube) 24%,var(--paper))}
+
+/* Chat — handwritten studio */
+.chat-wrap{padding:120px 0;background:linear-gradient(180deg,transparent 0, color-mix(in srgb,var(--paper) 60%,transparent) 30%, color-mix(in srgb,var(--paper) 60%,transparent) 70%, transparent 100%);position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.chat-ui{max-width:720px;margin:36px auto 0;background:var(--paper);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(26,24,20,.25)}
+.chat-top{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--peach) 20%,transparent)}
+.chat-top .ava{width:40px;height:40px;border-radius:50%;background:var(--rose);display:grid;place-items:center;color:var(--paper);font-family:var(--serif);font-style:italic;font-size:20px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+.chat-top strong{font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:-.01em}
+.chat-top small{display:block;font-size:12px;color:var(--muted)}
+.chat-top .live{margin-left:auto;font-size:11px;font-weight:700;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px}
+.chat-top .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sage);animation:breath 1.8s infinite}
+.chat-body{padding:22px;min-height:380px;display:flex;flex-direction:column;gap:12px}
+.bb{max-width:82%;padding:12px 16px;font-size:15px;border-radius:18px;line-height:1.55}
+.bb.user{align-self:flex-end;background:var(--ink);color:var(--paper);border-bottom-right-radius:6px}
+.bb.coach{align-self:flex-start;background:color-mix(in srgb,var(--butter) 40%,var(--paper));border:1px solid var(--line);border-bottom-left-radius:6px}
+.bb .cursor-blink{display:inline-block;width:2px;height:16px;background:var(--ink);margin-left:2px;animation:blink 1s steps(1) infinite;vertical-align:-2px}
+@keyframes blink{50%{opacity:0}}
+.typing{align-self:flex-start;display:inline-flex;gap:4px;padding:12px 16px;background:color-mix(in srgb,var(--butter) 40%,var(--paper));border:1px solid var(--line);border-radius:18px;border-bottom-left-radius:6px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--rose);animation:td 1.1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes td{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-5px)}}
+
+.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--paper) 50%,transparent)}
+.chat-input input{flex:1;padding:11px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);outline:none;font-size:14.5px}
+.chat-input input:focus{border-color:var(--rose)}
+.chat-input button{padding:11px 20px;border-radius:999px;background:var(--ink);color:var(--paper);font-weight:700;font-size:13px}
+.quick-row{display:flex;gap:8px;flex-wrap:wrap;padding:0 22px 16px}
+.quick-row button{padding:7px 13px;border-radius:999px;background:color-mix(in srgb,var(--peach) 30%,var(--paper));border:1px solid var(--line);font-size:12.5px;color:var(--ink);font-weight:500;transition:all .25s}
+.quick-row button:hover{background:var(--peach);transform:translateY(-1px)}
+
+/* toast */
+.toast{position:fixed;bottom:26px;right:26px;z-index:80;display:flex;align-items:center;gap:14px;padding:10px 16px 10px 10px;background:var(--paper);border:1px solid var(--line);border-radius:999px;transform:translateY(150%);transition:transform .6s cubic-bezier(.2,1.8,.4,1);box-shadow:0 20px 40px -10px rgba(26,24,20,.25)}
+.toast.show{transform:translateY(0)}
+.toast .medal{width:38px;height:38px;border-radius:50%;background:var(--butter);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:16px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08)}
+.toast .t-copy small{font-size:10.5px;color:var(--muted);font-weight:600;letter-spacing:.1em;text-transform:uppercase;display:block}
+.toast .t-copy strong{font-family:var(--serif);font-size:15px;font-weight:600}
+
+/* Pricing */
+.price-wrap{padding:120px 0 80px;position:relative;z-index:2}
+.price-head{text-align:center;max-width:680px;margin:0 auto 48px}
+.price-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(44px,6vw,84px);line-height:.95;letter-spacing:-.025em;margin:10px 0}
+.price-head h2 em{font-style:italic;color:var(--rose)}
+.price-toggle{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line);background:var(--paper);margin-top:14px;font-size:13px}
+.price-toggle button{padding:9px 18px;border-radius:999px;font-weight:600;color:var(--muted);transition:all .2s}
+.price-toggle button.active{background:var(--ink);color:var(--paper)}
+.plans{display:grid;grid-template-columns:1fr;gap:18px;max-width:1080px;margin:0 auto}
+@media (min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
+.plan{padding:32px;border-radius:28px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;gap:14px;position:relative;transition:transform .35s cubic-bezier(.2,1.6,.4,1)}
+.plan:hover{transform:translateY(-6px) rotate(-1deg)}
+.plan:nth-child(1){background:color-mix(in srgb,var(--sky) 22%,var(--paper))}
+.plan:nth-child(2){background:color-mix(in srgb,var(--butter) 35%,var(--paper));transform:translateY(-8px);box-shadow:0 30px 60px -30px rgba(0,0,0,.18)}
+.plan:nth-child(2):hover{transform:translateY(-14px) rotate(1deg)}
+.plan:nth-child(3){background:color-mix(in srgb,var(--ube) 22%,var(--paper))}
+.plan .tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%) rotate(-3deg);font-family:var(--hand);font-size:24px;color:var(--rose);background:var(--paper);border:1px solid var(--line);padding:2px 14px;border-radius:999px}
+.plan .pname{font-family:var(--serif);font-weight:600;font-size:24px;font-style:italic}
+.plan .pprice{font-family:var(--serif);font-weight:600;font-size:64px;line-height:1;letter-spacing:-.03em;display:flex;align-items:baseline;gap:6px}
+.plan .pprice small{font-family:var(--sans);font-size:14px;color:var(--muted);font-weight:500}
+.plan ul{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.plan li{font-size:14.5px;color:var(--ink);display:flex;gap:10px}
+.plan li::before{content:"✦";color:var(--rose)}
+.plan .cta{margin-top:auto;padding:13px 20px;border-radius:999px;background:var(--ink);color:var(--paper);font-weight:700;font-size:14px;text-align:center;transition:transform .3s cubic-bezier(.2,1.8,.4,1)}
+.plan .cta:hover{transform:scale(1.04) rotate(-1deg)}
+
+/* Footer */
+footer{padding:100px 0 40px;border-top:1px solid var(--line);position:relative;z-index:2}
+.foot-word{font-family:var(--serif);font-weight:400;font-size:clamp(80px,18vw,260px);letter-spacing:-.04em;line-height:.9}
+.foot-word em{font-style:italic;color:var(--rose)}
+.foot-row{margin-top:30px;display:flex;justify-content:space-between;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+/* reveal (spring) */
+.reveal{opacity:0;transform:translateY(30px) scale(.98);transition:opacity .7s,transform .7s cubic-bezier(.2,1.6,.4,1)}
+.reveal.is-visible{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#top" class="brand">Lyft<em>ora</em></a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#coach">Meet the coach</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Start free</a>
+</nav>
+
+<div class="swap">
+  <a href="index.html">V0</a>
+  <a href="neo.html">Neo Arcade</a>
+  <a href="studio.html" class="on">Soft Studio</a>
+</div>
+
+<main id="top">
+
+<section class="hero">
+  <div class="container">
+    <span class="hand-note">your daily practice
+      <svg width="40" height="30" viewBox="0 0 40 30" fill="none"><path d="M2 15 Q 20 28 36 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M30 4 L 36 8 L 32 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <h1>
+      Train <em class="wiggle">gently.</em> <br/>
+      Show up <span class="under">every</span> day.
+    </h1>
+    <p class="lead">A cozier kind of fitness app. Warm. Patient. Smart. Your coach remembers every session, celebrates every small win, and never yells.</p>
+    <div class="cta-row">
+      <a href="#pricing" class="btn btn-primary">Start free →</a>
+      <a href="#coach" class="btn btn-ghost">Meet the coach</a>
+    </div>
+
+    <!-- Collage -->
+    <div class="collage">
+      <!-- Streak -->
+      <div class="note card-streak">
+        <div class="tape"></div>
+        <div class="k">your streak</div>
+        <h3>Fourteen days of <em>you.</em></h3>
+        <div class="calendar" id="cal"></div>
+        <div class="streak-stat">
+          <div class="num" id="streak-num"><em>14</em></div>
+          <div class="lbl">days in a row<br/>longest ever: 23</div>
+        </div>
+      </div>
+
+      <!-- PR -->
+      <div class="note card-pr">
+        <div class="tape" style="left:auto;right:30px;transform:rotate(4deg);background:color-mix(in srgb,var(--rose) 70%,transparent)"></div>
+        <div class="k">new personal best</div>
+        <div class="trophy" id="trophy">
+          <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#FFE38A"/>
+                <stop offset="1" stop-color="#C78A00"/>
+              </linearGradient>
+            </defs>
+            <path d="M30 10 h60 v30 c0 22 -13 38 -30 38 s-30 -16 -30 -38 z" fill="url(#g1)" stroke="#8A5A00" stroke-width="2"/>
+            <path d="M30 18 h-14 c-4 0 -6 3 -6 7 v10 c0 10 10 18 20 18" fill="none" stroke="#8A5A00" stroke-width="3" stroke-linecap="round"/>
+            <path d="M90 18 h14 c4 0 6 3 6 7 v10 c0 10 -10 18 -20 18" fill="none" stroke="#8A5A00" stroke-width="3" stroke-linecap="round"/>
+            <rect x="50" y="76" width="20" height="16" fill="#C78A00" stroke="#8A5A00" stroke-width="2"/>
+            <rect x="38" y="92" width="44" height="8" rx="2" fill="#8A5A00"/>
+            <rect x="30" y="100" width="60" height="10" rx="3" fill="#FFE38A" stroke="#8A5A00" stroke-width="2"/>
+            <text x="60" y="48" text-anchor="middle" font-family="Fraunces" font-weight="800" font-size="26" fill="#6B3E00">PR</text>
+          </svg>
+        </div>
+        <h4>Deadlift</h4>
+        <div class="big"><span id="prw">120</span><small>kg × 5</small></div>
+      </div>
+
+      <!-- Stickers -->
+      <div class="note card-ach">
+        <div class="tape" style="background:color-mix(in srgb,var(--sage) 70%,transparent)"></div>
+        <div class="k">badge book</div>
+        <h3 style="font-family:var(--serif);font-weight:400;font-size:24px;font-style:italic">collected <em>together.</em></h3>
+        <div class="stickers" id="stickers">
+          <div class="sticker s1" style="--r:-10deg">First<br/>100kg</div>
+          <div class="sticker s2" style="--r:6deg">7 day<br/>streak</div>
+          <div class="sticker s3" style="--r:-4deg">Early<br/>bird</div>
+          <div class="sticker s4" style="--r:8deg">Protein<br/>week</div>
+          <div class="sticker s5" style="--r:-8deg">10<br/>workouts</div>
+          <div class="sticker s6" style="--r:5deg">On<br/>fire</div>
+        </div>
+        <button id="earn" class="btn btn-ghost" style="padding:8px 14px;font-size:12px;width:100%;justify-content:center">Earn the next ✦</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="container">
+    <span class="section-kicker">how it feels →</span>
+    <h2 class="section-title">A kinder way to get <em>stronger.</em></h2>
+
+    <div class="journey">
+      <div class="step reveal">
+        <div class="num">01</div>
+        <h4>Open the app.</h4>
+        <p>A warm good morning, your streak, and one thing to do today. No red numbers, no guilt.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">02</div>
+        <h4>Move with coach.</h4>
+        <p>Real-time replies. Scale the session up or down. Skip a day without losing your streak — you get one "rest token" a week.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">03</div>
+        <h4>Collect the moments.</h4>
+        <p>Sticker badges, PR ribbons, little notes from coach. Your progress looks like a scrapbook, not a spreadsheet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Chat -->
+<section class="chat-wrap" id="coach">
+  <div class="container">
+    <div style="max-width:680px;margin:0 auto;text-align:center">
+      <span class="section-kicker">say hi →</span>
+      <h2 class="section-title" style="margin:0 auto">Your coach, <em>live.</em></h2>
+      <p style="color:var(--muted);margin-top:14px;font-size:17px">Type anything. The reply arrives word by word — exactly like the real app. Your coach remembers your plan, your soreness, your schedule.</p>
+    </div>
+
+    <div class="chat-ui">
+      <div class="chat-top">
+        <div class="ava">L</div>
+        <div>
+          <strong>Coach Lyra</strong>
+          <small>knows your Tuesday plan</small>
+        </div>
+        <span class="live">Live</span>
+      </div>
+      <div class="chat-body" id="cbody">
+        <div class="bb coach">Good morning ☀ You slept 7h 20m — nice. Want to swap legs for an easier mobility day, or stick with plan?</div>
+      </div>
+      <div class="quick-row">
+        <button data-q="I'm a bit sore. Easier day?">A bit sore</button>
+        <button data-q="Quick 20-min home workout please">20-min home</button>
+        <button data-q="Plan a deload week">Deload week</button>
+        <button data-q="Lunch idea, 40g protein">Lunch idea</button>
+      </div>
+      <div class="chat-input">
+        <input id="cinput" type="text" placeholder="Write a message to Lyra…"/>
+        <button id="csend">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="price-wrap" id="pricing">
+  <div class="container">
+    <div class="price-head reveal">
+      <span class="section-kicker">pick a plan →</span>
+      <h2>Simple <em>membership.</em></h2>
+      <p style="color:var(--muted);font-size:17px">Start free. Upgrade when you're ready. Cancel anytime — your history stays with you.</p>
+      <div class="price-toggle" role="tablist">
+        <button class="active" data-bill="month">Monthly</button>
+        <button data-bill="year">Yearly · save 30%</button>
+      </div>
+    </div>
+
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="pname">Gentle</div>
+        <div class="pprice"><span data-price-m="0" data-price-y="0">₹0</span><small>/forever</small></div>
+        <ul>
+          <li>Workout logger &amp; streak</li>
+          <li>5 coach messages / week</li>
+          <li>100 foods in the library</li>
+          <li>3 badges to earn</li>
+        </ul>
+        <a href="#" class="cta">Start free</a>
+      </div>
+      <div class="plan reveal">
+        <span class="tag">most loved</span>
+        <div class="pname">Studio</div>
+        <div class="pprice"><span data-price-m="299" data-price-y="209">₹299</span><small><span data-bill-suffix>/month</span></small></div>
+        <ul>
+          <li>Unlimited coach chat</li>
+          <li>Adaptive weekly planning</li>
+          <li>Full food library (1000+)</li>
+          <li>All badges + sticker book</li>
+          <li>Rest tokens &amp; gentle streak</li>
+        </ul>
+        <a href="#" class="cta">Join Studio</a>
+      </div>
+      <div class="plan reveal">
+        <div class="pname">Circle</div>
+        <div class="pprice"><span data-price-m="799" data-price-y="559">₹799</span><small><span data-bill-suffix>/month</span></small></div>
+        <ul>
+          <li>Everything in Studio</li>
+          <li>Up to 5 people</li>
+          <li>Shared streak &amp; notes</li>
+          <li>Group PR wall</li>
+          <li>Weekly coach check-in call</li>
+        </ul>
+        <a href="#" class="cta">Start Circle</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-word">Lyft<em>ora.</em></div>
+    <div class="foot-row">
+      <span>© 2026 Lyftora · Made with care.</span>
+      <span>Soft Studio · edition two</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<div class="toast" id="toast">
+  <div class="medal">★</div>
+  <div class="t-copy">
+    <small>Badge earned</small>
+    <strong id="toast-text">First 100kg</strong>
+  </div>
+</div>
+
+<script>
+// reveal
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}})},{rootMargin:'0px 0px -12% 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// streak calendar — filling in live
+(()=>{
+  const cal=document.getElementById('cal');
+  const num=document.getElementById('streak-num');
+  const total=14;
+  for(let i=0;i<28;i++){const e=document.createElement('i');cal.appendChild(e)}
+  const cells=[...cal.children];
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){fill();obs.disconnect()}})},{rootMargin:'0px 0px -20% 0px'});
+  obs.observe(cal);
+  function fill(){
+    let i=0;
+    const seq=setInterval(()=>{
+      if(i>=cells.length){clearInterval(seq);return}
+      const c=cells[i];
+      if(i<cells.length-total){ /* faded past */ }
+      else if(i===cells.length-1){c.classList.add('today')}
+      else{c.classList.add('on')}
+      i++;
+    },50);
+    num.innerHTML='<em>'+total+'</em>';
+  }
+})();
+
+// PR burst
+(()=>{
+  const t=document.getElementById('trophy');
+  const w=document.getElementById('prw');
+  let v=120;
+  t.addEventListener('click',()=>{
+    v+=2.5;w.textContent=v;
+    t.classList.remove('burst');void t.offsetWidth;t.classList.add('burst');
+    toast('New PR · Deadlift '+v+'kg');
+  });
+  // first auto burst on scroll
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){setTimeout(()=>{t.classList.add('burst');toast('New PR · Deadlift 120kg')},400);obs.disconnect()}})},{rootMargin:'0px 0px -15% 0px'});
+  obs.observe(t);
+})();
+
+// stickers — earn new
+(()=>{
+  const btn=document.getElementById('earn');
+  const book=document.getElementById('stickers');
+  const more=[['Meal<br/>streak','var(--rose)','#fff'],['Squat<br/>queen','var(--sky)','var(--ink)'],['Sleep<br/>hero','var(--ube)','var(--ink)'],['First<br/>month','var(--peach)','var(--ink)']];
+  let i=0;
+  btn.addEventListener('click',()=>{
+    if(i>=more.length){toast('Sticker book full! Come back tomorrow');return}
+    const [t,bg,c]=more[i];
+    const s=document.createElement('div');
+    s.className='sticker new';
+    s.innerHTML=t;
+    const positions=[{l:'22%',t:'30%'},{l:'58%',t:'36%'},{l:'28%',t:'8%'},{l:'70%',t:'28%'}];
+    const p=positions[i];
+    s.style.left=p.l;s.style.top=p.t;s.style.background=bg;s.style.color=c;
+    book.appendChild(s);
+    toast('New badge · '+t.replace('<br/>',' '));
+    i++;
+  });
+})();
+
+// toast
+let tT;
+function toast(text){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-text').textContent=text;
+  t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// chat
+(()=>{
+  const body=document.getElementById('cbody');
+  const input=document.getElementById('cinput');
+  const send=document.getElementById('csend');
+  const quick=document.querySelectorAll('.quick-row button');
+
+  const replies={
+    "I'm a bit sore. Easier day?":"Totally fine — let's swap. Today: 20 min mobility + a walk. I'll save the leg session for Thursday. Drink water, 30g protein at lunch, and message me if anything pinches. You're still on streak. ✦",
+    "Quick 20-min home workout please":"Got you. 20 min, no equipment. 5 rounds of: 10 squats, 10 push-ups, 10 glute bridges, 20s plank. 30s rest between rounds. Warm-up with 2 min arm circles + cat-cow. I'll log it to today's card.",
+    "Plan a deload week":"Good call — you've been at 90% for three weeks. Deload: same movements, 60% weight, 2 sets instead of 4. Sleep 8+ hours, 2 walks a day, one yoga session. Back to full intensity next Monday. Trust me.",
+    "Lunch idea, 40g protein":"Two favourites: 1) Paneer tikka bowl with quinoa, cucumber, yogurt raita — 42g. 2) Chickpea + tuna salad with olive oil and lemon — 46g. I can add either to your meal plan now."
+  };
+  function addUser(t){const d=document.createElement('div');d.className='bb user';d.textContent=t;body.appendChild(d);body.scrollTop=body.scrollHeight}
+  function showTyping(){const t=document.createElement('div');t.className='typing';t.id='typing';t.innerHTML='<span></span><span></span><span></span>';body.appendChild(t);body.scrollTop=body.scrollHeight}
+  function hideTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function reply(q){
+    const canned=replies[q]||"Mmm — good question. Give me a moment with your log. In the meantime: 2L water, walk after lunch, protein at every meal. We'll tune the details on our weekly check-in.";
+    showTyping();await wait(800);hideTyping();
+    const bb=document.createElement('div');bb.className='bb coach';bb.innerHTML='<span></span><span class="cursor-blink"></span>';body.appendChild(bb);
+    const span=bb.querySelector('span');
+    // character-by-character, like a pen
+    for(let i=0;i<canned.length;i++){
+      span.textContent+=canned[i];body.scrollTop=body.scrollHeight;
+      const ch=canned[i];
+      let d=22;
+      if('.,!?'.includes(ch))d=240;
+      else if(ch===' ')d=40;
+      await wait(d+Math.random()*15);
+    }
+    bb.querySelector('.cursor-blink')?.remove();
+    toast('Coach replied · +1 kindness');
+  }
+  function submit(q){if(!q)return;addUser(q);input.value='';reply(q)}
+  send.addEventListener('click',()=>submit(input.value.trim()));
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')submit(input.value.trim())});
+  quick.forEach(b=>b.addEventListener('click',()=>submit(b.dataset.q)));
+})();
+
+// pricing toggle
+(()=>{
+  const btns=document.querySelectorAll('.price-toggle button');
+  const nums=document.querySelectorAll('[data-price-m]');
+  const suffixes=document.querySelectorAll('[data-bill-suffix]');
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    btns.forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    const yr=b.dataset.bill==='year';
+    nums.forEach(n=>{const v=yr?n.dataset.priceY:n.dataset.priceM;n.textContent='₹'+parseInt(v).toLocaleString()});
+    suffixes.forEach(s=>s.textContent=yr?'/month · billed yearly':'/month');
+  }));
+})();
+</script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { createBottomTabNavigator, type BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Typography } from '../components/common/Typography';
-import { useTheme } from '../hooks/useTheme';
-import { spacing, MIN_TOUCH_TARGET } from '../theme/spacing';
-import type { MainTabParamList } from '../types/navigation';
+import type { NavigationProp } from '@react-navigation/native';
+import { LL, LS, TL, FL } from '../components/light';
+import { LIcon } from '../components/light/Icon';
+import type { MainTabParamList, RootStackParamList } from '../types/navigation';
 
 import { DashboardScreen } from '../screens/dashboard/DashboardScreen';
 import { WorkoutScreen } from '../screens/workout/WorkoutScreen';
@@ -14,94 +14,71 @@ import { ProgressScreen } from '../screens/progress/ProgressScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
-const TAB_ICONS: Record<keyof MainTabParamList, string> = {
-  Dashboard: '🏠',
-  Workout: '💪',
-  Add: '➕',
-  Diet: '🥗',
-  Progress: '📈',
-};
+const TABS: { name: keyof MainTabParamList; icon: string; label: string; fab?: boolean }[] = [
+  { name: 'Dashboard', icon: 'grid_view', label: 'Home' },
+  { name: 'Workout', icon: 'fitness_center', label: 'Train' },
+  { name: 'Add', icon: 'play_arrow', label: '', fab: true },
+  { name: 'Diet', icon: 'restaurant', label: 'Diet' },
+  { name: 'Progress', icon: 'insights', label: 'Progress' },
+];
 
 function PlaceholderScreen() {
   return <View />;
 }
 
-function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
-  const { colors } = useTheme();
+function FloatingTabBar({ state, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View
-      style={[
-        tabStyles.container,
-        {
-          backgroundColor: colors.tabBar,
-          borderTopColor: colors.border,
-          paddingBottom: insets.bottom || spacing.sm,
-        },
-      ]}
-    >
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
-        const isCenter = route.name === 'Add';
+    <View pointerEvents="box-none" style={[styles.wrapper, { paddingBottom: insets.bottom > 0 ? insets.bottom : 14 }]}>
+      <View style={styles.pill}>
+        {TABS.map((t, idx) => {
+          const route = state.routes.find((r) => r.name === t.name);
+          if (!route) return null;
+          const focused = state.index === state.routes.findIndex((r) => r.name === t.name);
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            if (isCenter) {
-              navigation.navigate('ActiveWorkout', {});
-            } else {
-              navigation.navigate(route.name);
-            }
+          if (t.fab) {
+            return (
+              <Pressable
+                key={t.name}
+                onPress={() => {
+                  const parent = navigation.getParent<NavigationProp<RootStackParamList>>();
+                  parent?.navigate('ActiveWorkout', {});
+                }}
+                style={styles.fab}
+                accessibilityRole="button"
+                accessibilityLabel="Start workout"
+              >
+                <LIcon name="play_arrow" size={26} color={LL.ink} />
+              </Pressable>
+            );
           }
-        };
 
-        if (isCenter) {
+          void idx;
           return (
             <Pressable
-              key={route.key}
-              onPress={onPress}
-              accessibilityRole="button"
-              accessibilityLabel="Start workout"
-              style={[tabStyles.centerTab, { backgroundColor: colors.primary }]}
+              key={t.name}
+              onPress={() => {
+                const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+                if (!focused && !event.defaultPrevented) navigation.navigate(t.name);
+              }}
+              style={styles.tab}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: focused }}
             >
-              <Typography variant="displaySmall" color="#0A0E1A">
-                {TAB_ICONS[route.name as keyof MainTabParamList]}
-              </Typography>
+              <LIcon name={t.icon} size={20} color={focused ? LL.primary : 'rgba(244,239,228,0.60)'} />
+              <Text
+                style={[
+                  TL.labelSm,
+                  { fontFamily: FL.monoMedium, fontSize: 8.5, color: focused ? LL.primary : 'rgba(244,239,228,0.55)' },
+                ]}
+              >
+                {t.label}
+              </Text>
             </Pressable>
           );
-        }
-
-        return (
-          <Pressable
-            key={route.key}
-            onPress={onPress}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: isFocused }}
-            accessibilityLabel={options.tabBarAccessibilityLabel ?? route.name}
-            style={tabStyles.tab}
-          >
-            <Typography
-              variant="bodyLarge"
-              style={tabStyles.icon}
-            >
-              {TAB_ICONS[route.name as keyof MainTabParamList]}
-            </Typography>
-            <Typography
-              variant="labelSmall"
-              color={isFocused ? colors.primary : colors.textTertiary}
-            >
-              {route.name}
-            </Typography>
-          </Pressable>
-        );
-      })}
+        })}
+      </View>
     </View>
   );
 }
@@ -109,8 +86,8 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 export function MainTabNavigator() {
   return (
     <Tab.Navigator
-      tabBar={(props) => <CustomTabBar {...props} />}
-      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <FloatingTabBar {...props} />}
+      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: LL.bg } }}
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
       <Tab.Screen name="Workout" component={WorkoutScreen} />
@@ -121,34 +98,40 @@ export function MainTabNavigator() {
   );
 }
 
-const tabStyles = StyleSheet.create({
-  container: {
+const styles = StyleSheet.create({
+  wrapper: {
+    position: 'absolute',
+    left: 14,
+    right: 14,
+    bottom: 0,
+  },
+  pill: {
+    height: 64,
+    borderRadius: 999,
+    backgroundColor: LL.ink,
     flexDirection: 'row',
-    borderTopWidth: 1,
-    paddingTop: spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingHorizontal: 8,
+    ...LS.md,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: MIN_TOUCH_TARGET,
-    paddingVertical: spacing.xs,
+    paddingVertical: 4,
+    gap: 2,
   },
-  icon: {
-    fontSize: 20,
-    marginBottom: 2,
-  },
-  centerTab: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+  fab: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: LL.primary,
+    borderWidth: 3,
+    borderColor: LL.ink,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -20,
-    shadowColor: '#00D4AA',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    marginTop: -18,
+    ...LS.glow,
   },
 });
